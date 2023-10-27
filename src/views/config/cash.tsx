@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { type FC } from "react";
 import type { RadioChangeEvent } from "antd";
-import { Form, Button, Radio } from "antd";
+import { Form, Button, Radio, message } from "antd";
 import { useRequest } from "ahooks";
 import { cashIs, postCashIs } from "@/service/api";
 
@@ -38,6 +38,9 @@ const Cash: FC = () => {
     }
   );
 
+  const success = () => {
+    void message.success("更新配置成功");
+  };
   return (
     <>
       <div className=" px-[24px] py-[16px] box-border">
@@ -60,7 +63,6 @@ const Cash: FC = () => {
           <Radio.Group
             onChange={onChange1}
             value={value1}
-            name="newUserOpen"
             className=" h-[40px] flex items-center"
           >
             <Radio value={true}>开启</Radio>
@@ -75,7 +77,6 @@ const Cash: FC = () => {
           <Radio.Group
             onChange={onChange2}
             value={value2}
-            name="shareOpen"
             className=" h-[40px] flex items-center"
           >
             <Radio value={true}>开启</Radio>
@@ -85,6 +86,7 @@ const Cash: FC = () => {
 
         <Form.Item wrapperCol={{ span: 16 }}>
           <Button
+            onClick={success}
             type="primary"
             htmlType="submit"
             className=" h-[40px] rounded-[4px]"
