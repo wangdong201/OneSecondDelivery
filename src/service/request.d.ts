@@ -9,4 +9,10 @@ namespace Req {
     current: number;
     pageSize: number;
   };
+  type CashIs = {
+    shareOpen: boolean;
+    newUserOpen: boolean;
+    newUserRules: { couponNo: string; probability: number }[];
+    shareUserRules: { couponNo: string; probability: number }[];
+  };
 }

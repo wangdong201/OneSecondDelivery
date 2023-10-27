@@ -31,4 +31,25 @@ namespace Res {
       }[];
     };
   };
+  type CashData = {
+    code: number;
+    msg: string;
+    data: {
+      pageSize: number;
+      current: number;
+      count: number;
+      totalPages: number;
+      data: [];
+    };
+  };
+  type CashIs = {
+    code: number;
+    msg: string;
+    data: {
+      shareOpen: boolean;
+      newUserOpen: boolean;
+      newUserRules: { couponNo: string; probability: number }[];
+      shareUserRules: { couponNo: string; probability: number }[];
+    };
+  };
 }
