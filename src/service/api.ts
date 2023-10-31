@@ -61,3 +61,32 @@ export const getAdminUserList = async (params: Req.AdminUserList) =>
 // 用户列表启用禁用
 export const putAdminUserStatus = async (params: Req.PutAdminUserStatus) =>
   await request.put("/api/admin/user/status", params);
+
+// 数据总览-订单数据曲线
+export const getAdminAnalysisNewOrder = async (params: Req.OrderData) =>
+  await request.get<Res.AecData>("/api/admin/analysis/new/order", {
+    params
+  });
+
+// 数据总览-用户数据曲线数据
+export const getPlateOneData = async (params: Req.Asss) =>
+  await request.get<Res.ResDatas>("/api/admin/analysis/new/user", {
+    params
+  });
+
+// 数据总览-板块一数据
+export const getOverviewData = async () =>
+  await request.get<Res.OverviewData>("/api/admin/analysis/total");
+
+// 首页-右上角弹框
+export const getPopUp = async () => {
+  return await request.get<Res.PopUp>("/api/admin/info");
+};
+
+// 个人设置
+export const PersonalSettings = async () =>
+  await request.get<Res.PersonalData>("/api/admin/info/self");
+
+// 修改密码
+export const ChangePassword = async (params: Req.getChangePasswordData) =>
+  await request.put("/api/admin/updatepwd", params);

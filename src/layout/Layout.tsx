@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable @typescript-eslint/consistent-type-assertions */
 import { type FC, useMemo, useState } from "react";
 import { Outlet, useNavigate, Navigate } from "react-router-dom";
@@ -6,6 +7,9 @@ import type { MenuProps } from "antd";
 import { Menu, Layout, Popover } from "antd";
 import { Icon } from "@iconify/react";
 import checkPermission from "@/utils/checkPermission";
+import { useRequest } from "ahooks";
+import { getPopUp } from "../service/api";
+import getCookies from "../utils/LogOut";
 
 const Wrapper = styled.div`
   .ant-menu-item::after {
@@ -35,6 +39,7 @@ const Wrapper = styled.div`
     border-radius: unset !important;
   }
   .ant-layout-sider-children {
+    height: 603.2px;
     width: 200px;
     overflow-y: auto;
   }
@@ -228,17 +233,20 @@ const layout: FC = () => {
       navigate(UrlArr[Number(e.key)]);
     }
   };
-
+  // 右上角数据
+  const { data: PopUpData } = useRequest(async () => await getPopUp());
   // 右上角个人信息弹窗
   const content = (
-    <div className="h-[238px] w-[240px] m-[-12px]">
+    <div className="h-[238px] w-[240px] m-[-12px] overflow-hidden">
       <div className="h-[88px] w-[100%] bg-gradient-to-r from-[#667BD0] to-[#D9A0FE] flex justify-between items-center rounded-t-[3px]">
         <div className="h-[50px] pl-[15px]">
           <div className="flex text-[20px] text-[#fff]">
-            <p className="mr-[10px]">Info.realName</p>
-            <p>Info.mobileNumber</p>
+            <p className="mr-[10px]">{PopUpData?.data.data.realName}</p>
+            <p>{PopUpData?.data.data.mobileNumber}</p>
           </div>
-          <div className="text-[#fff]">NO:Info.adminNo</div>
+          <div className="text-[rgba(255,255,255,.6)] text-[14px]">
+            NO:{PopUpData?.data.data.adminNo}
+          </div>
         </div>
       </div>
       <div className="w-[100%] border-b">
@@ -248,8 +256,8 @@ const layout: FC = () => {
             navigate("/user/update");
           }}
         >
-          <Icon icon="ic:sharp-settings" />
-          <div>个人设置</div>
+          <Icon icon="ic:sharp-settings" width={17} className="mt-[2px]" />
+          <div className="ml-[16px]">个人设置</div>
         </div>
         <div
           className="h-[50px] pl-[10px] w-[100%] flex items-center justify-start cursor-pointer hover:bg-[#F3F3F3]"
@@ -257,11 +265,17 @@ const layout: FC = () => {
             navigate("/user/pwd");
           }}
         >
-          <Icon icon="ph:lock-key-fill" />
-          <div>修改密码</div>
+          <Icon icon="ph:lock-key-fill" width={17} className="mt-[2px]" />
+          <div className="ml-[16px]">修改密码</div>
         </div>
       </div>
-      <div className="h-[50px] w-[100%] pl-[30px] cursor-pointer flex items-center justify-start hover:bg-[#F3F3F3]">
+      <div
+        className="h-[50px] w-[100%] pl-[30px] cursor-pointer flex items-center justify-start hover:bg-[#F3F3F3]"
+        style={{ borderTop: "1px solid #e7e7e7" }}
+        onClick={() => {
+          getCookies();
+        }}
+      >
         退出登录
       </div>
     </div>
@@ -272,6 +286,7 @@ const layout: FC = () => {
     if (arrowAtCenter) return { pointAtCenter: true };
     return showArrow;
   }, [showArrow, arrowAtCenter]);
+
   return checkPermission() ? (
     <div>
       <Wrapper className="bg-[#F3F3F3]">
