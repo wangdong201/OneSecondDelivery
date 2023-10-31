@@ -3,48 +3,48 @@ module.exports = {
   types: [
     {
       value: "feat",
-      name: "feat(新功能): 向现有功能添加新功能或改进",
+      name: "feat(新功能): 向现有功能添加新功能或改进"
     },
     {
       value: "fix",
-      name: "fix(修复): 修复代码库中的bug或者issues",
+      name: "fix(修复): 修复代码库中的bug或者issues"
     },
     {
       value: "chore",
-      name: "chore(任务): 构建/工程依赖/工具/文档更新/格式化",
+      name: "chore(任务): 构建/工程依赖/工具/文档更新/格式化"
     },
     {
       value: "docs",
-      name: "docs(文档): 为代码库更新文档",
+      name: "docs(文档): 为代码库更新文档"
     },
     {
       value: "style",
-      name: "style(样式): 改善代码库的格式或风格, 修改页面样式",
+      name: "style(样式): 改善代码库的格式或风格, 修改页面样式"
     },
     {
       value: "refactor",
-      name: "refactor(重构): 对代码库的结构或组织进行重组或改进",
+      name: "refactor(重构): 对代码库的结构或组织进行重组或改进"
     },
     {
       value: "perf",
-      name: "perf(性能): 代码库性能优化",
+      name: "perf(性能): 代码库性能优化"
     },
     {
       value: "init",
-      name: "init(初始化): 项目初始化",
+      name: "init(初始化): 项目初始化"
     },
     {
       value: "test",
-      name: "test(测试): 自动化测试",
+      name: "test(测试): 自动化测试"
     },
     {
       value: "revert",
-      name: "revert(回退): 撤销之前某个提交",
+      name: "revert(回退): 撤销之前某个提交"
     },
     {
       value: "build",
-      name: "build(构建): 重构系统编译配置",
-    },
+      name: "build(构建): 重构系统编译配置"
+    }
   ],
   // 每一步的提示信息
   messages: {
@@ -54,7 +54,7 @@ module.exports = {
     body: "请输入commit描述, 可通过&换行(选填)",
     // breaking: '列出任何BREAKING CHANGES(破坏性修改)(可选)',
     footer: "请输入要关闭的issue(可选)",
-    confirmCommit: "确定提交此 commit 吗？",
+    confirmCommit: "确定提交此 commit 吗？"
   },
   // 配置scope可选项，mono项目可按子项目维度划分，非mono项目可按功能or业务模块划分
   // scopes: ["global", "scope1", "scope2"],
@@ -64,5 +64,5 @@ module.exports = {
   // 标题首字母大写
   upperCaseSubject: true,
   // 标题必填
-  requiredSubject: true,
+  requiredSubject: true
 };
