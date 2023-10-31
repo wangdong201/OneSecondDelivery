@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { type FC } from "react";
 import type { RadioChangeEvent } from "antd";
-import { Form, Button, Radio, message } from "antd";
+import { Form, Button, Radio } from "antd";
 import { useRequest } from "ahooks";
 import { cashIs, postCashIs } from "@/service/api";
 
@@ -38,9 +38,6 @@ const Cash: FC = () => {
     }
   );
 
-  const success = () => {
-    void message.success("更新配置成功");
-  };
   return (
     <>
       <div className=" px-[24px] py-[16px] box-border">
@@ -86,7 +83,6 @@ const Cash: FC = () => {
 
         <Form.Item wrapperCol={{ span: 16 }}>
           <Button
-            onClick={success}
             type="primary"
             htmlType="submit"
             className=" h-[40px] rounded-[4px]"
