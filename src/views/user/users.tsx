@@ -50,6 +50,10 @@ const Wrapper = styled.div`
     padding: 0 !important;
     background-color: #fff !important;
   }
+  .ant-select-selector,
+  .ant-select-arrow {
+    display: none !important;
+  }
 `;
 
 const Users: FC = () => {
