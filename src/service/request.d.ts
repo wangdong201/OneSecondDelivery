@@ -72,4 +72,8 @@ namespace Req {
     confirmPwd: string;
     oldpwd: string;
   };
+
+  type deleteAdminCitysValuation = {
+    id: number;
+  };
 }
