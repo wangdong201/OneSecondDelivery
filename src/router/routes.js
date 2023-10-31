@@ -28,6 +28,8 @@ import AgreementRider from "../views/config/agreementRider";
 import AgentEditAdd from "@/views/user/agent/edit/add";
 import AddAdmin from "@/views/user/edit/add";
 import UserEditUpData from "@/views/user/agent/edit/updata";
+import UserUpdate from "@/views/user/update";
+import UserPwd from "../views/user/pwd";
 
 const routes = [
   { path: "/login", element: <Login /> },
@@ -62,7 +64,9 @@ const routes = [
       { path: "/config/agreementRider", element: <AgreementRider /> },
       { path: "/user/agent/edit/add", element: <AgentEditAdd /> },
       { path: "/user/edit/add", element: <AddAdmin /> },
-      { path: "/user/agent/edit/update/:id?", element: <UserEditUpData /> }
+      { path: "/user/agent/edit/update/:id?", element: <UserEditUpData /> },
+      { path: "/user/update", element: <UserUpdate /> },
+      { path: "/user/pwd", element: <UserPwd /> }
     ]
   }
 ];

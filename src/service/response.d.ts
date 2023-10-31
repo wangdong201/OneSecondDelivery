@@ -101,4 +101,59 @@ namespace Res {
       ];
     };
   };
+  type AecData = {
+    code: number;
+    msg: string;
+    data: {
+      date: string;
+      cancel: number;
+      close: number;
+      waitPay: number;
+      waitReceive: number;
+      sending: number;
+      waitConfirm: number;
+      complete: number;
+    }[];
+  };
+  type OverviewData = {
+    code: number;
+    msg: string;
+    data: {
+      userTotal: number;
+      orderCompleteTotal: number;
+      tradeTotal: number;
+      incomeTotal: number;
+      yesterdayUserTotal: string;
+      yesterdayOrderCompleteTotal: string;
+      yesterdayTradeTotal: number;
+      yesterdayIncomeTotal: number;
+    };
+  };
+  type ResDatas = {
+    code: number;
+    msg: string;
+    data: { date: string; wx: number; user: number }[];
+  };
+  type PersonalData = {
+    code: number;
+    msg: string;
+    data: {
+      adminNo: string;
+      mobileNumber: string;
+      adminName: string;
+      realName: string;
+      avatarUrl: object;
+    };
+  };
+  type PopUp = {
+    code: number;
+    msg: string;
+    data: {
+      adminNo: string;
+      mobileNumber: string;
+      adminName: string;
+      realName: string;
+      avatarUrl: object;
+    };
+  };
 }

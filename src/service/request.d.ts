@@ -59,4 +59,17 @@ namespace Req {
     mobileNumber: string;
     realName: string;
   };
+  type OrderData = {
+    beginDate: number;
+    endDate: number;
+  };
+  type Asss = {
+    beginDate: number;
+    endDate: number;
+  };
+  type getChangePasswordData = {
+    adminPwd: string;
+    confirmPwd: string;
+    oldpwd: string;
+  };
 }

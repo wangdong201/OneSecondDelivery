@@ -26,3 +26,8 @@ body {
 .ant-select-arrow {
   display: none !important;
 }
+
+* {
+  margin: 0;
+  padding: 0;
+}
