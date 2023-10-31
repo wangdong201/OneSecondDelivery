@@ -90,3 +90,26 @@ export const PersonalSettings = async () =>
 // 修改密码
 export const ChangePassword = async (params: Req.getChangePasswordData) =>
   await request.put("/api/admin/updatepwd", params);
+
+// 计价规则
+export const getValuation = async (params: Req.AdminAgent) =>
+  await request.get<Res.Valuation>("/api/admin/citys/valuation/list", {
+    params
+  });
+
+// 重量标签
+export const getWeight = async (params: Req.AdminAgent) =>
+  await request.get<Res.Weight>("/api/admin/citys/weight/list", {
+    params
+  });
+
+// 物品标签组
+export const getTag = async (params: Req.AdminAgent) =>
+  await request.get<Res.Tag>("/api/admin/citys/tag/list", {
+    params
+  });
+
+// 计价规则删除
+export const deleteAdminCitysValuationDel = async (
+  data: Req.deleteAdminCitysValuation
+) => await request.delete("/api/admin/citys/valuation/del", { data });

@@ -156,4 +156,100 @@ namespace Res {
       avatarUrl: object;
     };
   };
+  type Valuation = {
+    code: number;
+    msg: string;
+    data: {
+      pageSize: number;
+      current: number;
+      count: number;
+      totalPages: number;
+      data: {
+        id: number;
+        createTime: string;
+        updateTime: string;
+        isDelete: number;
+        ruleName: string;
+        ruleContext: {
+          time: undefined[];
+          weight: {
+            gt: number;
+            lte: number;
+            price: number;
+            unitWeight: number;
+          }[];
+          distance: {
+            gt: number;
+            lte: number;
+            price: number;
+            unitDistance: number;
+          }[];
+        };
+        createdBy: string;
+        updatedBy: string;
+      }[];
+    };
+  };
+  type Weight = {
+    code: number;
+    msg: string;
+    data: {
+      pageSize: number;
+      current: number;
+      count: number;
+      totalPages: number;
+      data: {
+        id: number;
+        createTime: string;
+        updateTime: string;
+        isDelete: number;
+        tagName: string;
+        tags: { type: string; label: string; value: number[] }[];
+        createdBy: string;
+        updatedBy: string;
+      }[];
+    };
+  };
+  type Tag = {
+    code: number;
+    msg: string;
+    data: {
+      pageSize: number;
+      current: number;
+      count: number;
+      totalPages: number;
+      data: [
+        {
+          id: number;
+          createTime: string;
+          updateTime: string;
+          isDelete: number;
+          groupName: string;
+          tags: string[];
+          createdBy: string;
+          updatedBy: string;
+        },
+        {
+          id: number;
+          createTime: string;
+          updateTime: string;
+          isDelete: number;
+          groupName: string;
+          tags: string[];
+          createdBy: string;
+          updatedBy: string;
+        },
+        {
+          id: number;
+          createTime: string;
+          updateTime: string;
+          isDelete: number;
+          groupName: string;
+          tags: string[];
+          createdBy: string;
+          updatedBy: string;
+        }
+      ];
+    };
+  };
 }
