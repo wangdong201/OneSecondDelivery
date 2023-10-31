@@ -45,6 +45,10 @@ const Wrapper = styled.div`
     border-color: #955ce6;
     margin-left: 5px;
   }
+  .ant-select-selector,
+  .ant-select-arrow {
+    display: none !important;
+  }
 `;
 
 const Agents: FC = () => {

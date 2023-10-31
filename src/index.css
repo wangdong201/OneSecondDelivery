@@ -22,11 +22,6 @@ body {
   border-radius: 5px; /* 设置滑块的圆角半径 */
 }
 
-.ant-select-selector,
-.ant-select-arrow {
-  display: none !important;
-}
-
 * {
   margin: 0;
   padding: 0;
