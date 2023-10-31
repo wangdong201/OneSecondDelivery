@@ -76,4 +76,37 @@ namespace Req {
   type deleteAdminCitysValuation = {
     id: number;
   };
+  type ConfigAppDs = {
+    qqAppid: string;
+    ttAppid: string;
+    wxAppId: string;
+    qqAppSecret: string;
+    ttAppSecret: string;
+    wxAppSecret: string;
+  };
+  type ConfigAppMch = {
+    notifyUrl: string;
+    wxMchId: string;
+    wxMchSecert: string;
+  };
+  type ConfigAppMap = {
+    mapKey: string;
+  };
+  type ConfigAppAli = {
+    arn: string;
+    ossBucket: string;
+    ossRegion: string;
+    accessKeyId: string;
+    smsSignName: string;
+    accessKeySecret: string;
+    smsTemplateCode: string;
+  };
+  type ConfigAppCorwx = {
+    corpid: string;
+    corpsecret: string;
+    verifyChatid: string;
+  };
+  type ConfigAppCreate = { name: string; owner: string; userlist: string[] };
+  type ConfigShare = { desc: string; path: string; title: string };
+  type ConfigIntegral = { withIntegral: string };
 }

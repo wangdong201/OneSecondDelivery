@@ -113,3 +113,50 @@ export const getTag = async (params: Req.AdminAgent) =>
 export const deleteAdminCitysValuationDel = async (
   data: Req.deleteAdminCitysValuation
 ) => await request.delete("/api/admin/citys/valuation/del", { data });
+// 获取小程序设置ID及密钥
+// 开发设置
+export const configAppID = async () =>
+  await request.get<Res.ConfigAppID>("/api/admin/config/appauth");
+
+export const postConfigAppDs = async (data: Req.ConfigAppDs) =>
+  await request.post("/api/admin/config/appauth", data);
+// 支付设置
+export const configAppMch = async () =>
+  await request.get<Res.ConfigAppMch>("/api/admin/config/appmch");
+
+export const postConfigAppMch = async (data: Req.ConfigAppMch) =>
+  await request.post("/api/admin/config/appmch", data);
+// 地图设置
+export const configAppMap = async () =>
+  await request.get<Res.ConfigAppMap>("/api/admin/config/map");
+
+export const postConfigAppMap = async (data: Req.ConfigAppMap) =>
+  await request.post("/api/admin/config/map", data);
+// 阿里云配置
+export const configAppAli = async () =>
+  await request.get<Res.ConfigAppAli>("/api/admin/config/ali");
+
+export const postConfigAppAli = async (data: Req.ConfigAppAli) =>
+  await request.post("/api/admin/config/ali", data);
+// 企业微信配置
+export const configAppCorwx = async () =>
+  await request.get<Res.ConfigAppCorwx>("/api/admin/config/corwx");
+
+export const postConfigAppCorwx = async (data: Req.ConfigAppCorwx) =>
+  await request.post("/api/admin/config/corwx", data);
+
+export const postConfigAppCreate = async (data: Req.ConfigAppCreate) =>
+  await request.post("/api/admin/corwx/appchat/create", data);
+// 系统设置 *********
+// 分享设置
+export const configShare = async () =>
+  await request.get<Res.configShare>("/api/admin/config/share");
+
+export const postConfigShare = async (data: Req.ConfigShare) =>
+  await request.post("/api/admin/config/share", data);
+// 积分设置
+export const configIntegral = async () =>
+  await request.get<Res.configIntegral>("/api/admin/config/integral");
+
+export const postConfigIntegral = async (data: Req.ConfigIntegral) =>
+  await request.post("/api/admin/config/integral", data);

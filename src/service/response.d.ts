@@ -252,4 +252,50 @@ namespace Res {
       ];
     };
   };
+  type ConfigAppID = {
+    code: number;
+    msg: string;
+    data: {
+      qqAppid: string;
+      ttAppid: string;
+      wxAppId: string;
+      qqAppSecret: string;
+      ttAppSecret: string;
+      wxAppSecret: string;
+    };
+  };
+  type ConfigAppMch = {
+    code: number;
+    msg: string;
+    data: { wxMchId: string; notifyUrl: string; wxMchSecert: string };
+  };
+  type ConfigAppMap = { code: number; msg: string; data: { mapKey: string } };
+  type ConfigAppAli = {
+    code: number;
+    msg: string;
+    data: {
+      arn: string;
+      ossBucket: string;
+      ossRegion: string;
+      accessKeyId: string;
+      smsSignName: string;
+      accessKeySecret: string;
+      smsTemplateCode: string;
+    };
+  };
+  type ConfigAppCorwx = {
+    code: number;
+    msg: string;
+    data: { corpid: string; corpsecret: string; verifyChatid: string };
+  };
+  type configShare = {
+    code: number;
+    msg: string;
+    data: { desc: string; path: string; title: string };
+  };
+  type configIntegral = {
+    code: number;
+    msg: string;
+    data: { withIntegral: number };
+  };
 }

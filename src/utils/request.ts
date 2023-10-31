@@ -20,6 +20,9 @@ request.interceptors.response.use(async (response) => {
   if (response.data.code !== 200) {
     await message.error(response.data.msg);
   }
+  if (response.data.code === 200 && response.data.msg !== "ok") {
+    await message.success(response.data.msg);
+  }
   return response;
 });
 
