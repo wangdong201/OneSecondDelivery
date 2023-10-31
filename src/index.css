@@ -10,3 +10,19 @@
 body {
   margin: 0px;
 }
+
+.lastBox {
+  overflow-x: hidden;
+}
+.lastBox::-webkit-scrollbar {
+  width: 5px; /* 设置垂直滚动条的宽度 */
+}
+.lastBox::-webkit-scrollbar-thumb {
+  background-color: #eeeeee; /* 设置滚动条滑块颜色 */
+  border-radius: 5px; /* 设置滑块的圆角半径 */
+}
+
+.ant-select-selector,
+.ant-select-arrow {
+  display: none !important;
+}

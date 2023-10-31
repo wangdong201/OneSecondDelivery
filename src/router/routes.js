@@ -25,6 +25,9 @@ import Agents from "../views/user/agent/agents";
 import Admins from "../views/user/admins";
 import Users from "../views/user/users";
 import AgreementRider from "../views/config/agreementRider";
+import AgentEditAdd from "@/views/user/agent/edit/add";
+import AddAdmin from "@/views/user/edit/add";
+import UserEditUpData from "@/views/user/agent/edit/updata";
 
 const routes = [
   { path: "/login", element: <Login /> },
@@ -56,7 +59,10 @@ const routes = [
       { path: "/config/wxsubscribe", element: <Wxsubscribe /> },
       { path: "/config/user", element: <User /> },
       { path: "/config/rider", element: <Rider /> },
-      { path: "/config/agreementRider", element: <AgreementRider /> }
+      { path: "/config/agreementRider", element: <AgreementRider /> },
+      { path: "/user/agent/edit/add", element: <AgentEditAdd /> },
+      { path: "/user/edit/add", element: <AddAdmin /> },
+      { path: "/user/agent/edit/update/:id?", element: <UserEditUpData /> }
     ]
   }
 ];

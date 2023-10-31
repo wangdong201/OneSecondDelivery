@@ -35,7 +35,6 @@ const Wrapper = styled.div`
     border-radius: unset !important;
   }
   .ant-layout-sider-children {
-    height: 603.2px;
     width: 200px;
     overflow-y: auto;
   }
