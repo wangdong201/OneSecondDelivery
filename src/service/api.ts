@@ -185,3 +185,6 @@ export const grtAdminConfigAgreementRider = async () =>
 export const postAdminConfigAgreementRider = async (
   data: Req.configGuideUser
 ) => await request.post("/api/admin/config/agreement/rider", data);
+// 城市管理 运营城市列表
+export const cityManagementList = async (params: Req.cityList) =>
+  await request.get<Res.cityList>("/api/admin/citys/list", { params });
