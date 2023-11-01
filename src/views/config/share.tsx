@@ -47,7 +47,7 @@ const Share: FC = () => {
   };
 
   return (
-    <>
+    <div className="overflow-y-auto h-[540px] lastBox">
       <div className=" text-[20px] py-[16px] px-[24px] font-bold">分享设置</div>
       <Form
         form={form}
@@ -144,7 +144,7 @@ const Share: FC = () => {
           </Button>
         </Form.Item>
       </Form>
-    </>
+    </div>
   );
 };
 

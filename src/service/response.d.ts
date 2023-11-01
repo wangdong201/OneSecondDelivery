@@ -298,4 +298,14 @@ namespace Res {
     msg: string;
     data: { withIntegral: number };
   };
+  type configGuideUser = {
+    code: number;
+    msg: string;
+    data: { content: string };
+  };
+  type configGuideRider = {
+    code: number;
+    msg: string;
+    data: { content: string };
+  };
 }
