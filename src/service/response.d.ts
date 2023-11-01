@@ -308,4 +308,38 @@ namespace Res {
     msg: string;
     data: { content: string };
   };
+  type cityList = {
+    code: number;
+    msg: string;
+    data: {
+      pageSize: number;
+      current: number;
+      count: number;
+      totalPages: number;
+      data: [
+        {
+          id: number;
+          createTime: string;
+          updateTime: string;
+          cityNo: string;
+          cityName: string;
+          province: string;
+          agentNo: string;
+          startPrice: number;
+          extractHelpDeliver: number;
+          extractHelpGet: number;
+          extractHelpBuy: number;
+          extractHelpDeliverForAgent: number;
+          extractHelpGetForAgent: number;
+          extractHelpBuyForAgent: number;
+          citysValuationId: number;
+          citysWeightTagId: number;
+          citysTagGroupId: number;
+          status: number;
+          corwxChatid: object;
+          updatedBy: string;
+        }
+      ];
+    };
+  };
 }

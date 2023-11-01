@@ -112,4 +112,5 @@ namespace Req {
   type configGuideUser = {
     content: string;
   };
+  type cityList = { current: number; pageSize: number };
 }
