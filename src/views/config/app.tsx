@@ -855,10 +855,10 @@ const items: TabsProps["items"] = [
 
 const App: FC = () => {
   return (
-    <>
+    <div className="overflow-y-auto h-[540px] lastBox">
       <div className=" h-[36px] text-[24px]">小程序设置</div>
       <Tabs defaultActiveKey="1" items={items} />
-    </>
+    </div>
   );
 };
 

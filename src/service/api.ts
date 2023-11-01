@@ -160,3 +160,28 @@ export const configIntegral = async () =>
 
 export const postConfigIntegral = async (data: Req.ConfigIntegral) =>
   await request.post("/api/admin/config/integral", data);
+
+// 用户指南
+export const getAdminConfigGuideUser = async () =>
+  await request.get<Res.configGuideUser>("/api/admin/config/guide/user");
+
+// 修改用户指南
+export const postAdminConfigGuideUser = async (data: Req.configGuideUser) =>
+  await request.post("/api/admin/config/guide/user", data);
+
+// 骑手指南
+export const grtAdminConfigGuideRider = async () =>
+  await request.get<Res.configGuideRider>("/api/admin/config/guide/rider");
+
+// 修改骑手指南
+export const postAdminConfigGuideRider = async (data: Req.configGuideUser) =>
+  await request.post("/api/admin/config/guide/rider", data);
+
+// 骑手协议
+export const grtAdminConfigAgreementRider = async () =>
+  await request.get<Res.configGuideRider>("/api/admin/config/agreement/rider");
+
+// 修改骑手协议
+export const postAdminConfigAgreementRider = async (
+  data: Req.configGuideUser
+) => await request.post("/api/admin/config/agreement/rider", data);

@@ -109,4 +109,7 @@ namespace Req {
   type ConfigAppCreate = { name: string; owner: string; userlist: string[] };
   type ConfigShare = { desc: string; path: string; title: string };
   type ConfigIntegral = { withIntegral: string };
+  type configGuideUser = {
+    content: string;
+  };
 }
