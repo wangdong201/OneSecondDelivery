@@ -90,7 +90,8 @@ namespace Res {
       shareUserRules: { couponNo: string; probability: number }[];
     };
   };
-  type AdminList = {
+
+  type ResponseData = {
     code: number;
     msg: string;
     data: {
@@ -98,6 +99,7 @@ namespace Res {
       current: number;
       count: number;
       totalPages: number;
+
       data: {
         adminNo: string;
         adminName: string;
@@ -113,6 +115,53 @@ namespace Res {
   };
 
   type AdminUserList = {
+    code: number;
+    msg: string;
+    data: {
+      pageSize: number;
+      current: number;
+      count: number;
+      data: [
+        {
+          id: number;
+          createTime: string;
+          updateTime: string;
+          userNo: string;
+          countryCode: string;
+          mobileNumber: string;
+          avatarUrl: string;
+          nickName: string;
+          gender: number;
+          province: object;
+          city: object;
+          area: object;
+          status: number;
+          homeAddressNo: object;
+          companyAddressNo: object;
+        }
+      ];
+    };
+  };
+
+  type ResPonsedata = {
+    code: number;
+    msg: string;
+    data: {
+      userCancelTips: [string, string, object];
+      adminCancelTips: string[];
+      agentCancelTips: [string, string, object];
+      riderCancelTips: string[];
+      userCancelRules: { price: number; timeRange: number[] }[];
+      riderCancelRules: { price: number; timeRange: number[] }[];
+    };
+  };
+
+  type ResPonseData = {
+    code: number;
+    msg: string;
+    data: { feeTips: number[]; agentExtract: number; platformExtract: number };
+  };
+  type ResponseDatas = {
     code: number;
     msg: string;
     data: {
@@ -174,6 +223,18 @@ namespace Res {
     data: { date: string; wx: number; user: number }[];
   };
   type PersonalData = {
+    code: number;
+    msg: string;
+    data: {
+      adminNo: string;
+      mobileNumber: string;
+      adminName: string;
+      realName: string;
+      avatarUrl: object;
+    };
+  };
+
+  type ResponseData = {
     code: number;
     msg: string;
     data: {
@@ -390,6 +451,28 @@ namespace Res {
           updatedBy: string;
         }
       ];
+    };
+  };
+
+  type AdminList = {
+    code: number;
+    msg: string;
+    data: {
+      pageSize: number;
+      current: number;
+      count: number;
+      totalPages: number;
+      data: {
+        adminNo: string;
+        adminName: string;
+        mobileNumber: string;
+        realName: string;
+        status: number;
+        createTime: string;
+        updateTime: string;
+        defaultPwd: string;
+        updatedBy: string;
+      }[];
     };
   };
 }

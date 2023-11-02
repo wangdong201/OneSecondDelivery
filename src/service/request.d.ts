@@ -15,6 +15,7 @@ namespace Req {
     newUserRules: { couponNo: string; probability: number }[];
     shareUserRules: { couponNo: string; probability: number }[];
   };
+
   type AdminCoupon = {
     current: number;
     pageSize: number;
@@ -145,5 +146,18 @@ namespace Req {
     limitNumber: number;
     status: number;
     couponNo: string;
+  };
+  type ResponseData = {
+    feeTips: number[];
+    agentExtract: number;
+    platformExtract: number;
+  };
+  type ResPonsedata = {
+    userCancelTips: [string, string, object];
+    adminCancelTips: string[];
+    agentCancelTips: [string, string, object];
+    riderCancelTips: string[];
+    userCancelRules: { price: number; timeRange: number[] }[];
+    riderCancelRules: { price: number; timeRange: number[] }[];
   };
 }
