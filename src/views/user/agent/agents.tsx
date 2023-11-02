@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import { type FC, useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { Icon } from "@iconify/react";
 import type { ColumnsType } from "antd/es/table";
@@ -59,6 +59,7 @@ const Agents: FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [seachData, setSeachData] = useState({});
   const [count, setCount] = useState(0);
+  const { id } = useParams(); // 获取路由跳转参数
 
   // 代理列表数据请求
   // refresh 手动触发请求并更新数据
@@ -67,6 +68,7 @@ const Agents: FC = () => {
       await adminAgent({
         current: currentPage,
         pageSize: 20,
+        agentNo: id,
         ...seachData // input框里的内容
       })
   );
@@ -147,7 +149,7 @@ const Agents: FC = () => {
                 color="#955CE6"
                 width="18"
                 onClick={() => {
-                  navigate(`/user/admins?adminNo=${record.agentNo}`);
+                  navigate(`/user/admins/adminNo=${record.agentNo}`);
                 }}
               />
             </Tooltip>

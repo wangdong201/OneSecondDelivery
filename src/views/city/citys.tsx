@@ -1,226 +1,374 @@
 /* eslint-disable no-console */
-import { type FC } from "react";
-import { Button, Form, Input, Select, Space, Tag, Table } from "antd";
+import { type FC, useState, useEffect } from "react";
 import type { ColumnsType } from "antd/es/table";
 import { useNavigate } from "react-router-dom";
 import { Icon } from "@iconify/react";
-import { cityManagementList } from "../../service/api";
+import { cityManagementList, putAdminCitysStatus } from "../../service/api";
 import { useRequest } from "ahooks";
+import styled from "styled-components";
+import {
+  Button,
+  Form,
+  Input,
+  Select,
+  Space,
+  Table,
+  Tag,
+  Tooltip,
+  Dropdown
+} from "antd";
 
-interface DataType {
-  key: number;
-  number: React.ReactElement;
-  city: string;
-  price: string;
-  platform: string;
-  agency: string;
-  agencyP: React.ReactElement;
-  tags: string[];
-  time: React.ReactElement;
-  controls: React.ReactElement;
-}
+const Wrapper = styled.div`
+  /* .ant-select-selector,
+  .ant-select-arrow {
+    display: none !important;
+  } */
+`;
 
-const columns: ColumnsType<DataType> = [
-  {
-    title: "编号",
-    dataIndex: "number",
-    key: "number"
-  },
-  {
-    title: "城市",
-    dataIndex: "city",
-    key: "city"
-  },
-  {
-    title: "起步价",
-    dataIndex: "price",
-    key: "price"
-  },
-  {
-    title: "平台抽成",
-    dataIndex: "platform",
-    key: "platform"
-  },
-  {
-    title: "代理抽成",
-    dataIndex: "agency",
-    key: "agency"
-  },
-  {
-    title: "代理人",
-    dataIndex: "agencyP",
-    key: "aagencyP"
-  },
-  {
-    title: "状态",
-    key: "status",
-    dataIndex: "status",
-    render: (_, { tags }) => (
-      <>
-        {tags.map((tag) => {
-          let color = tag.length > 5 ? "geekblue" : "green";
-          if (tag === "禁用") {
-            color = "volcano";
-          }
-          return (
-            <Tag color={color} key={tag}>
-              {tag.toUpperCase()}
-            </Tag>
-          );
-        })}
-      </>
-    )
-  },
-  {
-    title: "时间",
-    dataIndex: "time",
-    key: "time"
-  },
-  {
-    title: "操作",
-    dataIndex: "controls",
-    key: "controls"
-  }
-];
-
-const rowSelection = {
-  getCheckboxProps: (record: DataType) => ({
-    disabled: record.city === "Disabled User", // Column configuration not to be checked
-    name: record.city
-  })
-};
-const { Option } = Select;
 const Citys: FC = () => {
-  const Navigate = useNavigate();
-  // 城市列表数据
-  const { data: cityList } = useRequest(
-    async () => await cityManagementList({ current: 1, pageSize: 20 })
-  );
-  console.log(cityList?.data.data.data);
+  // const { Option } = Select;
+  const navigate = useNavigate();
+  // 复选框
+  const [selectionType] = useState<"checkbox" | "radio">("checkbox");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [seachData, setSeachData] = useState({});
 
-  const data = cityList?.data.data.data.map((res) => {
-    return {
-      key: res.id,
-      number: (
-        <div>
-          <div>{res.cityNo}</div>
-          <a className="text-[rgb(149,92,230)]">【计价规则】</a>
-        </div>
-      ),
-      city: `${res.province}-${res.cityName}`,
-      price: `${res.startPrice}元`,
-      platform: `送${(res.extractHelpDeliver * 100).toFixed(0)}%|取${(
-        res.extractHelpGet * 100
-      ).toFixed(0)}%|买${(res.extractHelpBuy * 100).toFixed(0)}%`,
-      agency: `送${(res.extractHelpDeliverForAgent * 100).toFixed(0)}%|取${(
-        res.extractHelpGetForAgent * 100
-      ).toFixed(0)}%|买${(res.extractHelpBuyForAgent * 100).toFixed(0)}%`,
-      agencyP: (
-        <Icon icon="ion:people-sharp" color="rgb(149,92,230)" width={20} />
-      ),
-      tags: ["禁用"],
-      time: (
-        <div>
-          <p>
-            创建: <span>{new Date(res.createTime).toLocaleString()}</span>
-          </p>
-          <p>
-            更新: <span>{new Date(res.updateTime).toLocaleString()}</span>
-          </p>
-        </div>
-      ),
-      controls: (
-        <div>
-          <Icon icon="fa6-solid:user-gear" color="rgb(149,92,230)" />
-          <Select placeholder="状态：全部" className="w-[100px]">
-            <Option value="10">修改</Option>
-            <Option value="1">启用</Option>
-            <Option value="0">禁用</Option>
-          </Select>
+  // 城市列表数据
+  const { data: cityList, refresh } = useRequest(
+    async () =>
+      await cityManagementList({
+        current: currentPage,
+        pageSize: 20,
+        ...seachData
+      })
+  );
+  // 页面刷新
+  useEffect(() => {
+    refresh();
+  }, [currentPage, seachData]);
+
+  // 数据类型
+  interface DataType {
+    id: number;
+    createTime: string;
+    updateTime: string;
+    cityNo: string;
+    cityName: string;
+    province: string;
+    agentNo: string;
+    startPrice: number;
+    extractHelpDeliver: number;
+    extractHelpGet: number;
+    extractHelpBuy: number;
+    extractHelpDeliverForAgent: number;
+    extractHelpGetForAgent: number;
+    extractHelpBuyForAgent: number;
+    citysValuationId: number;
+    citysWeightTagId: number;
+    citysTagGroupId: number;
+    status: number;
+    corwxChatid: object;
+    updatedBy: string;
+  }
+
+  // 表格头部以及内容
+  const columns: ColumnsType<DataType> = [
+    {
+      title: "编号",
+      dataIndex: "cityNo",
+      render: (_, { cityNo }) => (
+        <>
+          <span>{cityNo}</span>
+          <br />
+          <span className="text-[#955CE6]">【计价规则】</span>
+        </>
+      )
+    },
+    {
+      title: "城市",
+      dataIndex: ["province", "cityName"],
+      render: (_, { province, cityName }) => (
+        <>
+          <span>{province}-</span>
+          <span>{cityName}</span>
+        </>
+      )
+    },
+    {
+      title: "起步价",
+      dataIndex: "startPrice"
+    },
+    {
+      title: "平台抽成",
+      dataIndex: ["extractHelpDeliver", "extractHelpGet", "extractHelpBuy"],
+      render: (_, record) => (
+        <>
+          <span>
+            送{formatPercentage(record.extractHelpDeliver)}|取
+            {formatPercentage(record.extractHelpGet)}|买
+            {formatPercentage(record.extractHelpBuy)}
+          </span>
+        </>
+      )
+    },
+    {
+      title: "代理抽成",
+      dataIndex: "agency",
+      render: (_, record) => (
+        <>
+          <span>
+            送{formatPercentage(record.extractHelpDeliverForAgent)}|取
+            {formatPercentage(record.extractHelpGetForAgent)}|买
+            {formatPercentage(record.extractHelpBuyForAgent)}
+          </span>
+        </>
+      )
+    },
+    {
+      title: "代理人",
+      dataIndex: "agentNo",
+      render: (_, record) => (
+        <>
+          <Tooltip>
+            <Tooltip title="代理人">
+              <Icon
+                icon="ion:people-outline"
+                className="text-[#955CE6]"
+                onClick={() => {
+                  navigate(`/user/agent/agents/${record.agentNo}`);
+                }}
+              />
+            </Tooltip>
+          </Tooltip>
+        </>
+      )
+    },
+    {
+      title: "状态",
+      dataIndex: "status",
+      render: (text: number) => (
+        <Tag color={`${text === 0 ? "error" : text === 1 ? "success" : ""}`}>
+          {text === 1 ? "启用" : "禁用"}
+        </Tag>
+      )
+    },
+    {
+      title: "时间",
+      dataIndex: ["createTime", "updateTime"],
+      render: (text: string, { createTime, updateTime }) => (
+        <>
+          <span>创建:{time(createTime)}</span>
+          <span>更新:{time(updateTime)}</span>
+        </>
+      )
+    },
+    {
+      title: "操作",
+      dataIndex: "status",
+      render: (_, record) => (
+        <div className="flex items-center">
+          <Tooltip>
+            <Tooltip title="操作人">
+              <Icon icon="fa6-solid:user-gear" color="#955CE6" width="18" />
+            </Tooltip>
+          </Tooltip>
+          <Dropdown
+            menu={{
+              items: [
+                {
+                  key: "",
+                  label: (
+                    <div
+                      onClick={() => {
+                        navigate("/city/edit/chat");
+                      }}
+                    >
+                      创建群聊
+                    </div>
+                  )
+                },
+                {
+                  key: "2",
+                  label: (
+                    <div
+                      onClick={() => {
+                        navigate(
+                          `/city/edit/update/id=${record.id}&createTime=${record.createTime}&updateTime=${record.updateTime}&cityNo=${record.cityNo}&cityName=${record.cityName}&province=${record.province}&agentNo=${record.agentNo}&startPrice=${record.startPrice}&extractHelpDeliver=${record.extractHelpDeliver}&extractHelpGet=${record.extractHelpGet}&extractHelpBuy=${record.extractHelpBuy}&extractHelpDeliverForAgent=${record.extractHelpDeliverForAgent}&extractHelpGetForAgent=${record.extractHelpGetForAgent}&extractHelpBuyForAgent=${record.extractHelpBuyForAgent}&citysValuationId=${record.citysValuationId}&citysWeightTagId=${record.citysWeightTagId}&citysTagGroupId=${record.citysTagGroupId}&status=${record.status}&updatedBy=${record.updatedBy}`
+                        );
+                      }}
+                    >
+                      修改
+                    </div>
+                  )
+                },
+                {
+                  key: "3",
+                  label: (
+                    <div
+                      onClick={() => {
+                        cityStatusFn(record.cityNo, "1");
+                      }}
+                    >
+                      启用
+                    </div>
+                  ),
+                  disabled: record.status === 1
+                },
+                {
+                  key: "4",
+                  label: (
+                    <div
+                      onClick={() => {
+                        cityStatusFn(record.cityNo, "0");
+                      }}
+                    >
+                      禁用
+                    </div>
+                  ),
+                  disabled: record.status === 0
+                }
+              ]
+            }}
+            placement="bottom"
+          >
+            <Button className="h-[24px] w-[31.6px] px-[7px] border-[#955ce6] ml-[5px] flex items-center">
+              <Icon icon="iconoir:more-horiz" color="#955CE6" width="30" />
+            </Button>
+          </Dropdown>
         </div>
       )
-    };
-  });
+    }
+  ];
+
+  // 禁用启用
+  const cityStatusFn = (cityNo: string, status: string) => {
+    putAdminCitysStatus({ cityNo, status }).catch(() => {});
+    refresh();
+  };
+
+  // 搜索
+  const searchFn = (value: string) => {
+    setSeachData(value);
+  };
+
+  // 百分比转换函数
+  function formatPercentage(number: number): string {
+    const percentage = (number * 100).toFixed(0);
+    return `${percentage}%`;
+  }
+  // 时间转换函数
+  function time(time: any) {
+    const dateObj = new Date(time);
+    const year = dateObj.getFullYear();
+    const month = String(dateObj.getMonth() + 1).padStart(2, "0");
+    const day = String(dateObj.getDate()).padStart(2, "0");
+    const hours = String(dateObj.getUTCHours() + 8).padStart(2, "0");
+    const minutes = String(dateObj.getUTCMinutes()).padStart(2, "0");
+    const TimeData = `${year}/${month}/${day} ${hours}:${minutes}`;
+    return TimeData;
+  }
   return (
-    <div className="text-[#333] h-[100%] lastBox overflow-y-auto overflow-x-hidden">
-      <h1 className="text-[24px] font-[500] mb-[25px]">运营城市列表</h1>
-      {/* 搜索 */}
-      <Form name="basic" style={{ maxWidth: 600 }} autoComplete="off">
-        <Space>
-          <Form.Item name="username">
-            <Input
-              placeholder="城市编号"
-              style={{ width: "200px", height: "40px", borderRadius: "4px" }}
-            />
-          </Form.Item>
-          <Form.Item name="password">
-            <Input
-              placeholder="省/直辖市/自治区"
-              style={{ width: "200px", height: "40px", borderRadius: "4px" }}
-            />
-          </Form.Item>
-          <Form.Item name="password">
-            <Input
-              placeholder="城市名称"
-              style={{ width: "200px", height: "40px", borderRadius: "4px" }}
-            />
-          </Form.Item>
-          <Form.Item name="remember">
-            <Select
-              placeholder="状态"
-              style={{ width: 200, height: "40px", borderRadius: "4px" }}
-              options={[
-                { value: "全部", label: "状态: 全部" },
-                { value: "启用", label: "状态: 启用" },
-                { value: "禁用", label: "状态: 禁用" }
-              ]}
-            />
-          </Form.Item>
-        </Space>
-        <Space className="mt-[-6px]">
-          <Form.Item>
-            <Button
-              htmlType="reset"
-              style={{ width: 120, height: 40, borderRadius: "4px" }}
-            >
-              取消
-            </Button>
-          </Form.Item>
-          <Form.Item>
-            <Button
-              type="primary"
-              htmlType="submit"
-              style={{ width: 120, height: 40, borderRadius: "4px" }}
-            >
-              搜索
-            </Button>
-          </Form.Item>
-        </Space>
-      </Form>
-      {/* 城市列表 */}
-      <div className="w-[100%]" style={{ borderTop: "1px solid #e8e8e8" }}>
-        <Button
-          type="primary"
-          htmlType="button"
-          className="w-[120px] h-[40px] my-[24px]"
-          style={{ borderRadius: "4px" }}
-          onClick={() => {
-            Navigate("/city/edit/add");
-          }}
+    <Wrapper className="h-[100%] lastBox overflow-y-auto overflow-x-hidden">
+      <div className="text-[#333]">
+        <h1 className="text-[24px] font-[500] mb-[25px]">运营城市列表</h1>
+        {/* 搜索 */}
+        <Form
+          name="basic"
+          style={{ maxWidth: 600 }}
+          autoComplete="off"
+          onFinish={searchFn}
         >
-          添加运营城市
-        </Button>
-        <Table
-          rowSelection={{
-            ...rowSelection
-          }}
-          columns={columns}
-          dataSource={data}
-          bordered
-          className="text-[#333]"
-        />
+          <Space>
+            <Form.Item name="cityNo">
+              <Input
+                placeholder="城市编号"
+                style={{ width: "200px", height: "40px", borderRadius: "4px" }}
+              />
+            </Form.Item>
+            <Form.Item name="province">
+              <Input
+                placeholder="省/直辖市/自治区"
+                style={{ width: "200px", height: "40px", borderRadius: "4px" }}
+              />
+            </Form.Item>
+            <Form.Item name="cityName">
+              <Input
+                placeholder="城市名称"
+                style={{ width: "200px", height: "40px", borderRadius: "4px" }}
+              />
+            </Form.Item>
+            <Form.Item name="status">
+              <Select
+                placeholder="状态"
+                style={{ width: 200, height: "40px", borderRadius: "4px" }}
+                options={[
+                  { value: null, label: "状态: 全部" },
+                  { value: "1", label: "状态: 启用" },
+                  { value: "0", label: "状态: 禁用" }
+                ]}
+              />
+            </Form.Item>
+          </Space>
+          <Space className="mt-[-6px]">
+            <Form.Item>
+              <Button
+                htmlType="reset"
+                style={{ width: 120, height: 40, borderRadius: "4px" }}
+                onClick={() => {
+                  setSeachData("");
+                }}
+              >
+                取消
+              </Button>
+            </Form.Item>
+            <Form.Item>
+              <Button
+                type="primary"
+                htmlType="submit"
+                style={{ width: 120, height: 40, borderRadius: "4px" }}
+              >
+                搜索
+              </Button>
+            </Form.Item>
+          </Space>
+        </Form>
+        {/* 城市列表 */}
+        <div className="w-[100%]" style={{ borderTop: "1px solid #e8e8e8" }}>
+          <Button
+            type="primary"
+            htmlType="button"
+            className="w-[120px] h-[40px] my-[24px]"
+            style={{ borderRadius: "4px" }}
+            onClick={() => {
+              navigate("/city/edit/add");
+            }}
+          >
+            添加运营城市
+          </Button>
+          <Table
+            rowSelection={{
+              type: selectionType
+            }}
+            columns={columns}
+            dataSource={cityList?.data.data.data.map((item, index) => ({
+              ...item,
+              key: index // 使用数组索引作为key值
+            }))}
+            bordered={true}
+            pagination={{
+              pageSize: 20,
+              showQuickJumper: true,
+              showSizeChanger: true,
+              total: cityList?.data.data.count,
+              showTotal: (total) => `共 ${total} 条数据`,
+              onChange: (page) => {
+                setCurrentPage(page);
+              }
+            }}
+          />
+        </div>
       </div>
-    </div>
+    </Wrapper>
   );
 };
 

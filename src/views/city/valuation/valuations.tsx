@@ -72,7 +72,7 @@ const Valuations: FC = () => {
     {
       title: "操作",
       dataIndex: "operate",
-      render: (record: DataType) => (
+      render: (_, record: DataType) => (
         <div className="flex items-center">
           <Tooltip placement="top" title={"操作人"}>
             <NavLink to={"/user/admins"}>
@@ -95,6 +95,7 @@ const Valuations: FC = () => {
                     <div
                       onClick={() => {
                         deleteAdmin(record.id);
+                        refresh();
                       }}
                     >
                       删除

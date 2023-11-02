@@ -8,7 +8,7 @@ export const getVerifyCode = async () =>
 export const postAdminLogin = async (params: Req.AdminLogin) =>
   await request.post("/api/admin/login", params);
 
-// 代理列表
+// 代理列表 /admin/agent/list
 export const adminAgent = async (params: Req.AdminAgent) =>
   await request.get<Res.AgentList>("/api/admin/agent/list", { params });
 
@@ -185,10 +185,10 @@ export const grtAdminConfigAgreementRider = async () =>
 export const postAdminConfigAgreementRider = async (
   data: Req.configGuideUser
 ) => await request.post("/api/admin/config/agreement/rider", data);
+
 // 城市管理 运营城市列表
 export const cityManagementList = async (params: Req.cityList) =>
   await request.get<Res.cityList>("/api/admin/citys/list", { params });
-// await request.get<Res.AgentList>("/admin/agent/list", { params });
 
 // 优惠券列表
 export const adminCoupon = async (params?: Req.AdminCoupon) =>
@@ -241,3 +241,15 @@ export const postConfigOrderfee = async (data: Req.ResponseData) =>
 
 // 跳转
 export const getAdminInfoOne = async () => await request.get("/api/admin/info");
+
+// 城市管理禁用启用
+export const putAdminCitysStatus = async (params: Req.cityStatus) =>
+  await request.put("/api/admin/citys/status", params);
+
+// 修改城市
+export const putAdminCitysUpDate = async (params: Req.CitysUpDate) =>
+  await request.put("/api/admin/citys/update", params);
+
+// 新增城市
+export const postAdminCityAdd = async (params: Req.postCityAdd) =>
+  await request.post("/api/admin/citys/add", params);

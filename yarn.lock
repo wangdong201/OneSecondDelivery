@@ -2028,6 +2028,11 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
+"@pansy/china-division@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.npmmirror.com/@pansy/china-division/-/china-division-2.0.0.tgz#3761d3d92d497396593671f98fa40d26cc32fd04"
+  integrity sha512-CYaywhQni39wzpoVGDzgOal/nRdBApSHxcP4oOPVfCWatorVGjjPf37Ch/+bjZCKhKqNX1njY0MT7qLYSQs/Aw==
+
 "@pkgr/utils@^2.3.1":
   version "2.4.2"
   resolved "https://registry.npmmirror.com/@pkgr/utils/-/utils-2.4.2.tgz#9e638bbe9a6a6f165580dc943f138fd3309a2cbc"

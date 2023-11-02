@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import { type FC, useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { Icon } from "@iconify/react";
 import type { ColumnsType } from "antd/es/table";
@@ -53,6 +53,8 @@ const Wrapper = styled.div`
 
 const Admins: FC = () => {
   const { Option } = Select;
+  const { id } = useParams();
+  console.log(id);
   const navigate = useNavigate();
   // 复选框
   const [selectionType] = useState<"checkbox" | "radio">("checkbox");
@@ -98,7 +100,7 @@ const Admins: FC = () => {
     {
       title: "账号",
       dataIndex: ["adminName", "defaultPwd"],
-      render: (text: string, record: any) => {
+      render: (text: string, record: DataType) => {
         return (
           <div>
             <span>{record.adminName}</span>

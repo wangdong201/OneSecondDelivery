@@ -6,8 +6,10 @@ namespace Req {
     verifyCode: string;
   };
   type AdminAgent = {
-    current: number;
-    pageSize: number;
+    current?: number;
+    pageSize?: number;
+    agentNo?: string;
+    realName?: string;
   };
   type CashIs = {
     shareOpen: boolean;
@@ -159,5 +161,44 @@ namespace Req {
     riderCancelTips: string[];
     userCancelRules: { price: number; timeRange: number[] }[];
     riderCancelRules: { price: number; timeRange: number[] }[];
+  };
+  type cityStatus = {
+    cityNo: string;
+    status: string;
+  };
+  // 修改城市
+  type CitysUpDate = {
+    agentNo: string;
+    cityName: string;
+    cityNo: string;
+    citysTagGroupId: number;
+    citysValuationId: number;
+    citysWeightTagId: number;
+    extractHelpBuy: number;
+    extractHelpBuyForAgent: number;
+    extractHelpDeliver: number;
+    extractHelpDeliverForAgent: number;
+    extractHelpGet: number;
+    extractHelpGetForAgent: number;
+    province: string;
+    startPrice: number;
+    status: number;
+  };
+  // 添加城市
+  type postCityAdd = {
+    agentNo: string;
+    cityName: string;
+    citysTagGroupId: number;
+    citysValuationId: number;
+    citysWeightTagId: number;
+    extractHelpBuy: number;
+    extractHelpBuyForAgent: number;
+    extractHelpDeliver: number;
+    extractHelpDeliverForAgent: number;
+    extractHelpGet: number;
+    extractHelpGetForAgent: number;
+    province: string;
+    startPrice: number;
+    status: number;
   };
 }
