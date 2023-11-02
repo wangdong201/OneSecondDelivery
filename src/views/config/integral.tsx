@@ -18,7 +18,7 @@ const Integral: FC = () => {
   }, [inte]);
 
   const { run: ConfigInte } = useRequest(
-    async (values) => await postConfigIntegral(values),
+    async (values: Req.ConfigIntegral) => await postConfigIntegral(values),
     {
       manual: true
     }

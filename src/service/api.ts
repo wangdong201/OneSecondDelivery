@@ -253,3 +253,14 @@ export const putAdminCitysUpDate = async (params: Req.CitysUpDate) =>
 // 新增城市
 export const postAdminCityAdd = async (params: Req.postCityAdd) =>
   await request.post("/api/admin/citys/add", params);
+// 骑手列表获取
+export const getRiders = async (params: Req.getRiderlist) =>
+  await request.get<Res.RidersType>("/api/admin/rider/list", { params });
+
+// 骑手列表接单状态修改
+export const putRider = async (data: Req.PutRider) =>
+  await request.put("/api/admin/rider/receive/status", data);
+
+// 骑手列表操作
+export const putRidercz = async (data: Req.PutRidercz) =>
+  await request.put("/api/admin/user/status", data);

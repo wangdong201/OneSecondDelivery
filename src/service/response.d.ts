@@ -453,7 +453,30 @@ namespace Res {
       ];
     };
   };
-
+  type RidersType = {
+    code: number;
+    msg: string;
+    data: {
+      pageSize: number;
+      current: number;
+      count: number;
+      totalPages: number;
+      data: {
+        id: number;
+        createTime: string;
+        updateTime: string;
+        riderNo: string;
+        status: number;
+        userNo: string;
+        startReceive: number;
+        cityNo: string;
+        realname: string;
+        mobileNumber: string;
+        avatarUrl: string;
+        nickName: string;
+      }[];
+    };
+  };
   type AdminList = {
     code: number;
     msg: string;
