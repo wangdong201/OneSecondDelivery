@@ -1,15 +1,15 @@
 /* eslint-disable no-console */
-import { type FC, useEffect, useState } from "react";
-import { useNavigate } from "react-router";
+import { useEffect, type FC, useState } from "react";
+import { useNavigate, useParams } from "react-router";
 import styled from "styled-components";
 import { Icon } from "@iconify/react";
 import cascaderOptions, { DivisionUtil } from "@pansy/china-division";
 import {
+  adminAgent,
   getValuation,
   getWeight,
   getTag,
-  adminAgent,
-  postAdminCityAdd
+  putAdminCitysUpDate
 } from "@/service/api";
 import {
   AutoComplete,
@@ -43,15 +43,44 @@ const Wrapper = styled.div`
   }
 `;
 
-const Add: FC = () => {
+const Update: FC = () => {
   const navigate = useNavigate();
+  const params = useParams(); // 获取路由参数
+  const searchParams = new URLSearchParams(params.id); // 使用路由参数中的 id 创建 URLSearchParams 对象,用URLSearchParams来获取路由url中的参数
+  const UrlObj = Object.fromEntries(searchParams.entries()); // 将 URLSearchParams 对象转换为普通对象
+  const [form] = Form.useForm(); // 创建一个表单实例
   const divisionUtil = new DivisionUtil(cascaderOptions); // 实例化地区
   const [weight, setWeight] = useState([]);
   const [tag, setTag] = useState([]);
   const [valuationData, setValuationData] = useState([]);
   const [searchData, setSearchData] = useState<any>([]);
 
+  // 数据请求
   useEffect(() => {
+    adminAgent({ agentNo: UrlObj.agentNo })
+      .then((res: any) => {
+        form.setFieldsValue({
+          cityName: `${UrlObj.province}/${UrlObj.cityName}`,
+          agentNo: UrlObj.agentNo,
+          cityNo: UrlObj.cityNo,
+          citysTagGroupId: UrlObj.citysTagGroupId,
+          citysValuationId: UrlObj.citysValuationId,
+          citysWeightTagId: UrlObj.citysWeightTagId,
+          createTime: UrlObj.createTime,
+          extractHelpBuy: UrlObj.extractHelpBuy,
+          extractHelpBuyForAgent: UrlObj.extractHelpBuyForAgent,
+          extractHelpDeliver: UrlObj.extractHelpDeliver,
+          extractHelpDeliverForAgent: UrlObj.extractHelpDeliverForAgent,
+          extractHelpGet: UrlObj.extractHelpGet,
+          extractHelpGetForAgent: UrlObj.extractHelpGetForAgent,
+          id: UrlObj.id,
+          startPrice: UrlObj.startPrice,
+          status: Number(UrlObj.status),
+          updateTime: UrlObj.updateTime,
+          updatedBy: UrlObj.updatedBy
+        });
+      })
+      .catch(() => {});
     getWeight({ current: 1, pageSize: 20 })
       .then((res: any) => {
         // 将服务器返回的数据进行处理，将每个项转换为 { value: id, label: tagName } 的形式
@@ -79,21 +108,6 @@ const Add: FC = () => {
       .catch(() => {});
   }, []);
 
-  // 默认数据
-  const initialValues = {
-    extractHelpDeliver: 0.0,
-    extractHelpGet: 0.0,
-    extractHelpBuy: 0.0,
-    extractHelpDeliverForAgent: 0.0,
-    extractHelpGetForAgent: 0.0,
-    extractHelpBuyForAgent: 0.0,
-    startPrice: 0,
-    citysValuationId: 0,
-    citysWeightTagId: 0,
-    citysTagGroupId: 0,
-    status: 0
-  };
-
   // 搜索函数
   const searchFn = (text: string) => {
     adminAgent({ realName: text })
@@ -111,22 +125,28 @@ const Add: FC = () => {
       .catch(() => {});
   };
 
-  // 提交
-  const onFinish = (value: Req.postCityAdd) => {
-    // 根据输入的代理商编号查找对应的代理商编号，如果找不到则设置为空字符串
-    value.agentNo =
-      // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
-      searchData.find((item: any) => item.value === value.agentNo)?.agentNo ||
-      "";
-    // 根据选择的城市编码获取对应的省份名称
-    value.province = divisionUtil.getNameByCode(value.cityName[0]);
-    // 根据选择的城市编码获取对应的城市名称
-    value.cityName =
-      divisionUtil.getNameByCode(value.cityName[1]) === "市辖区"
-        ? divisionUtil.getNameByCode(value.cityName[0])
-        : divisionUtil.getNameByCode(value.cityName[1]);
-    postAdminCityAdd(value).catch(() => {}); // 进行城市添加操作
+  // 修改城市功能
+  const onFinish = (value: Req.CitysUpDate) => {
+    const { cityName } = value;
+    // 判断选择的是省份还是城市
+    // 如果 cityName 的长度不等于 3，表示选择的是省份
+    // 否则选择的是城市
+    const isProvinceSelected = cityName.length !== 3;
+    // 根据选择的是省份还是城市，设置对应的城市和省份名称
+    value.cityName = isProvinceSelected
+      ? UrlObj.cityName
+      : divisionUtil.getNameByCode(cityName[1]);
+    value.province = isProvinceSelected
+      ? UrlObj.province
+      : divisionUtil.getNameByCode(cityName[0]);
+
+    value.agentNo = UrlObj.agentNo;
+    value.cityNo = UrlObj.cityNo;
+
+    // 提交更新数据
+    putAdminCitysUpDate(value).catch(() => {});
   };
+
   return (
     <Wrapper className="overflow-y-auto h-[540px] lastBox">
       <h1 className="text-[20px] h-[64px] py-[16px] px-[24px] font-[800] flex items-center">
@@ -138,13 +158,13 @@ const Add: FC = () => {
         >
           <Icon icon="iconoir:arrow-left" />
         </span>
-        新增城市
+        修改城市
       </h1>
       <div className="w-[600px] px-[50px]">
         <Form
           autoComplete="off"
           layout="vertical"
-          initialValues={initialValues}
+          form={form}
           onFinish={onFinish}
         >
           <Form.Item
@@ -227,5 +247,4 @@ const Add: FC = () => {
     </Wrapper>
   );
 };
-
-export default Add;
+export default Update;

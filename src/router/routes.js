@@ -33,6 +33,8 @@ import UserPwd from "../views/user/pwd";
 import Add from "../views/city/edit/add";
 import CouponEditAddCon from "@/views/coupon/edit/add";
 import CouponEditUpdate from "@/views/coupon/edit/update";
+import CitysUpdate from "@/views/city/edit/update";
+import CitysChat from "@/views/city/edit/chat";
 
 const routes = [
   { path: "/login", element: <Login /> },
@@ -41,7 +43,7 @@ const routes = [
     element: <Layout />,
     children: [
       { path: "/", element: <Home /> },
-      { path: "/user/agent/agents", element: <Agents /> },
+      { path: "/user/agent/agents/:id?", element: <Agents /> },
       { path: "/user/admins", element: <Admins /> },
       { path: "/user/users", element: <Users /> },
       { path: "/order/orders", element: <Oders /> },
@@ -72,7 +74,9 @@ const routes = [
       { path: "/user/pwd", element: <UserPwd /> },
       { path: "/city/edit/add", element: <Add /> },
       { path: "/coupon/edit/add", element: <CouponEditAddCon /> },
-      { path: "/coupon/edit/update/:id", element: <CouponEditUpdate /> }
+      { path: "/coupon/edit/update/:id", element: <CouponEditUpdate /> },
+      { path: "/city/edit/update/:id?", element: <CitysUpdate /> },
+      { path: "/city/edit/chat", element: <CitysChat /> }
     ]
   }
 ];
