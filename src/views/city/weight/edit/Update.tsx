@@ -11,7 +11,7 @@ import {
 import { useState, type FC } from "react";
 import { NavLink } from "react-router-dom";
 
-const Add: FC = () => {
+const Update: FC = () => {
   const [value, setValue] = useState(2);
   const onChange = (e: RadioChangeEvent) => {
     setValue(e.target.value);
@@ -123,4 +123,4 @@ const Add: FC = () => {
   );
 };
 
-export default Add;
+export default Update;

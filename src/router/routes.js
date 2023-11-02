@@ -35,6 +35,12 @@ import CouponEditAddCon from "@/views/coupon/edit/add";
 import CouponEditUpdate from "@/views/coupon/edit/update";
 import CitysUpdate from "@/views/city/edit/update";
 import CitysChat from "@/views/city/edit/chat";
+import ValuationAdd from "../views/city/valuation/edit/Add";
+import WeightAdd from "../views/city/weight/edit/Add";
+import TagAdd from "../views/city/tag/edit/Add";
+import ValuationUpdate from "../views/city/valuation/edit/Update";
+import WeightUpdate from "../views/city/weight/edit/Update";
+import TagUpdate from "../views/city/tag/edit/Update";
 
 const routes = [
   { path: "/login", element: <Login /> },
@@ -76,7 +82,13 @@ const routes = [
       { path: "/coupon/edit/add", element: <CouponEditAddCon /> },
       { path: "/coupon/edit/update/:id", element: <CouponEditUpdate /> },
       { path: "/city/edit/update/:id?", element: <CitysUpdate /> },
-      { path: "/city/edit/chat", element: <CitysChat /> }
+      { path: "/city/edit/chat", element: <CitysChat /> },
+      { path: "/city/valuation/edit/add", element: <ValuationAdd /> },
+      { path: "/city/weight/edit/add", element: <WeightAdd /> },
+      { path: "/city/tag/edit/add", element: <TagAdd /> },
+      { path: "/city/valuation/edit/update", element: <ValuationUpdate /> },
+      { path: "/city/weight/edit/update", element: <WeightUpdate /> },
+      { path: "/city/tag/edit/update", element: <TagUpdate /> }
     ]
   }
 ];

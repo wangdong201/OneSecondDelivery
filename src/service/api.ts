@@ -113,6 +113,21 @@ export const getTag = async (params: Req.AdminAgent) =>
 export const deleteAdminCitysValuationDel = async (
   data: Req.deleteAdminCitysValuation
 ) => await request.delete("/api/admin/citys/valuation/del", { data });
+
+// 重量标签删除
+export const deleteAdminCitysWeightDel = async (
+  data: Req.deleteAdminCitysValuation
+) => await request.delete("/api/admin/citys/weight/del", { data });
+
+// 物品标签组删除
+export const deleteAdminCitysTagDel = async (
+  data: Req.deleteAdminCitysValuation
+) => await request.delete("/api/admin/citys/tag/del", { data });
+
+// 计价规则添加
+export const postValuation = async (params: Req.addAdminCitysValuaContext) =>
+  await request.post("/api/admin/citys/valuation/add", { params });
+
 // 获取小程序设置ID及密钥
 // 开发设置
 export const configAppID = async () =>

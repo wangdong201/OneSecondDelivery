@@ -89,6 +89,20 @@ namespace Req {
   type deleteAdminCitysValuation = {
     id: number;
   };
+  type addAdminCitysValuaContext = {
+    ruleName: string;
+    ruleContext: {
+      distance: {
+        gt: number;
+        lte: number;
+        unitDistance: number;
+        price: number;
+      }[];
+      weight: { gt: number; lte: number; unitWeight: number; price: number }[];
+      time: { gt: number; lte: number; price: number }[];
+    };
+  };
+
   type ConfigAppDs = {
     qqAppid: string;
     ttAppid: string;
@@ -212,4 +226,8 @@ namespace Req {
   };
   type PutRider = { riderNo: string; startReceive: boolean };
   type PutRidercz = { userNo: string; status: string };
+  type AdminAgents = {
+    current: number;
+    pageSize: number;
+  };
 }

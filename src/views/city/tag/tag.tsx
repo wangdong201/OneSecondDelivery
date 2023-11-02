@@ -1,9 +1,17 @@
 import { type FC, useState, useEffect, useRef } from "react";
-import type { MenuProps } from "antd";
 import { Icon } from "@iconify/react";
-import { Button, Input, Divider, Table, Tooltip, Dropdown, Form } from "antd";
+import {
+  Button,
+  Input,
+  Divider,
+  Table,
+  Tooltip,
+  Dropdown,
+  Form,
+  message
+} from "antd";
 import type { ColumnsType } from "antd/es/table";
-import { getTag } from "@/service/api";
+import { deleteAdminCitysTagDel, getTag } from "@/service/api";
 import { useRequest } from "ahooks";
 import { NavLink } from "react-router-dom";
 
@@ -22,7 +30,7 @@ const Tag: FC = () => {
   }, [refresh, seek]);
 
   const inputRef = useRef(null);
-  const onFinish = (values: { tagName?: string }) => {
+  const onFinish = (values: string | number) => {
     setSeek(values);
     // console.log(values);
   };
@@ -53,20 +61,63 @@ const Tag: FC = () => {
     },
     {
       title: "操作",
-      dataIndex: "operate"
+      dataIndex: "operate",
+      render: (text: string, record: DataType) => (
+        <div className="flex items-center">
+          <Tooltip placement="top" title={"操作人"}>
+            <NavLink to={"/user/admins"}>
+              <Icon
+                icon="clarity:administrator-solid"
+                className="text-[20px] text-[#955ce6]"
+              />
+            </NavLink>
+          </Tooltip>
+          <Dropdown
+            menu={{
+              items: [
+                {
+                  key: "1",
+                  label: (
+                    <div>
+                      <NavLink to={"/city/tag/edit/update"}>修改</NavLink>
+                    </div>
+                  )
+                },
+                {
+                  key: "2",
+                  label: (
+                    <div
+                      onClick={() => {
+                        deleteAdmin(record.id);
+                        refresh();
+                      }}
+                    >
+                      删除
+                    </div>
+                  )
+                }
+              ]
+            }}
+            className="w-[30px] h-[25px] ml-1"
+          >
+            <Button>
+              <Icon icon="ri:more-fill" className="ml-[-7px]" />
+            </Button>
+          </Dropdown>
+        </div>
+      )
     }
   ];
 
-  const items: MenuProps["items"] = [
-    {
-      key: "1",
-      label: <div>修改</div>
-    },
-    {
-      key: "2",
-      label: <div>删除</div>
-    }
-  ];
+  const deleteAdmin = (id: number) => {
+    deleteAdminCitysTagDel({ id })
+      .then(() => {
+        void message.success("删除成功");
+      })
+      .catch(() => {
+        void message.error("删除失败");
+      });
+  };
 
   const data: DataType[] = [];
   tag?.map((value, index) => {
@@ -77,31 +128,11 @@ const Tag: FC = () => {
       tags: value.tags[0],
       updateTime: (
         <div>
-          <div>创建:{value.createTime}</div>
-          <div>更新:{value.updateTime}</div>
+          <div>创建:{new Date(value.createTime).toLocaleString()}</div>
+          <div>更新:{new Date(value.updateTime).toLocaleString()}</div>
         </div>
       ),
-      operate: (
-        <div className="flex items-center">
-          <div>
-            <Tooltip placement="top" title={"操作人"}>
-              <NavLink to={"/user/admins"}>
-                <Icon
-                  icon="clarity:administrator-solid"
-                  className="text-[20px] text-[#955ce6]"
-                />
-              </NavLink>
-            </Tooltip>
-          </div>
-          <div>
-            <Dropdown menu={{ items }} className="w-[30px] h-[25px]">
-              <Button>
-                <Icon icon="ri:more-fill" className="ml-[-7px]" />
-              </Button>
-            </Dropdown>
-          </div>
-        </div>
-      )
+      operate: <div></div>
     });
   });
 
@@ -121,7 +152,7 @@ const Tag: FC = () => {
       <Form onFinish={onFinish}>
         <div className="text-[24px]">物品标签组列表</div>
         <div className="mt-[20px]">
-          <Form.Item name="tagName">
+          <Form.Item name="groupName">
             <Input
               placeholder="标签组名称"
               className="w-[200px] h-[40px] px-[11px] py-[4px]"
@@ -129,7 +160,15 @@ const Tag: FC = () => {
             />
           </Form.Item>
           <div className="flex items-center mt-[22px]">
-            <Button className="w-[120px] h-[40px]">取消</Button>
+            <Button
+              className="w-[120px] h-[40px]"
+              onClick={() => {
+                onFinish("");
+                refresh();
+              }}
+            >
+              取消
+            </Button>
             <Form.Item className="m-0">
               <Button
                 type="primary"
@@ -144,11 +183,14 @@ const Tag: FC = () => {
         <Divider />
         <div className="mb-[24px] flex justify-between">
           <Button type="primary" className="w-[130px] h-[40px]">
-            添加物品标签组
+            <NavLink to={"/city/tag/edit/add"}>添加物品标签组</NavLink>
           </Button>
           <Button
             icon={<Icon icon="clarity:refresh-line" rotate={1} />}
             style={{ width: "40px", height: "40px", fontSize: "18px" }}
+            onClick={() => {
+              refresh();
+            }}
           />
         </div>
         <div>

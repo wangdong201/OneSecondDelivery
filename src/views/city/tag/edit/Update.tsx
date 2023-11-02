@@ -3,7 +3,7 @@ import { Button, Form, Input } from "antd";
 import { type FC } from "react";
 import { NavLink } from "react-router-dom";
 
-const Add: FC = () => {
+const Update: FC = () => {
   return (
     <div className="h-[100%] overflow-y-auto">
       <div className="px-[24px] flex items-center">
@@ -39,4 +39,4 @@ const Add: FC = () => {
   );
 };
 
-export default Add;
+export default Update;
