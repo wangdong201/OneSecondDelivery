@@ -589,13 +589,20 @@ const WCs: FC = () => {
   }, [cor]);
 
   const { run: ConfigAppWCs } = useRequest(
-    async (values) => await postConfigAppCorwx(values),
+    async (values: Req.ConfigAppCorwx) => await postConfigAppCorwx(values),
     {
       manual: true
     }
   );
+  interface ConfigCreate {
+    qunname: string;
+    qunuser: string;
+    qun1: string;
+    qun2: string;
+    qun3: string;
+  }
   const { run: ConfigAppCreate } = useRequest(
-    async ({ qunname, qunuser, qun1, qun2, qun3 }) =>
+    async ({ qunname, qunuser, qun1, qun2, qun3 }: ConfigCreate) =>
       await postConfigAppCreate({
         name: qunname,
         owner: qunuser,
@@ -855,10 +862,10 @@ const items: TabsProps["items"] = [
 
 const App: FC = () => {
   return (
-    <div className="overflow-y-auto h-[540px] lastBox">
+    <>
       <div className=" h-[36px] text-[24px]">小程序设置</div>
       <Tabs defaultActiveKey="1" items={items} />
-    </div>
+    </>
   );
 };
 

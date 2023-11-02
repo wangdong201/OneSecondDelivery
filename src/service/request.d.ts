@@ -201,4 +201,15 @@ namespace Req {
     startPrice: number;
     status: number;
   };
+  type getRiderlist = {
+    current: number;
+    pageSize: number;
+    idCardNo?: string;
+    mobileNumber?: string;
+    realname?: string;
+    riderNo?: string;
+    userNo?: string;
+  };
+  type PutRider = { riderNo: string; startReceive: boolean };
+  type PutRidercz = { userNo: string; status: string };
 }
