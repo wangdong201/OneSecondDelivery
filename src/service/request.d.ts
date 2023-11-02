@@ -15,6 +15,16 @@ namespace Req {
     newUserRules: { couponNo: string; probability: number }[];
     shareUserRules: { couponNo: string; probability: number }[];
   };
+  type AdminCoupon = {
+    current: number;
+    pageSize: number;
+  };
+  type ConfigCoupon = {
+    shareOpen: boolean;
+    newUserOpen: boolean;
+    newUserRules: { couponNo: string; probability: number }[];
+    shareUserRules: { couponNo: string; probability: number }[];
+  };
   type PutStatus = {
     agentNo: string;
     status: string;
@@ -113,4 +123,27 @@ namespace Req {
     content: string;
   };
   type cityList = { current: number; pageSize: number };
+  type ChangeStatus = {
+    couponNo: string;
+    status: string;
+  };
+  type AdminAddCoupons = {
+    conditionService: string;
+    conditionsAmount: number;
+    couponName: string;
+    deadlineDays: number;
+    discountAmount: number;
+    limitNumber: number;
+    status: number;
+  };
+  type UpdateCoupons = {
+    couponName: string;
+    deadlineDays: number;
+    discountAmount: number;
+    conditionsAmount: number;
+    conditionService: string;
+    limitNumber: number;
+    status: number;
+    couponNo: string;
+  };
 }

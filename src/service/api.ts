@@ -188,3 +188,31 @@ export const postAdminConfigAgreementRider = async (
 // 城市管理 运营城市列表
 export const cityManagementList = async (params: Req.cityList) =>
   await request.get<Res.cityList>("/api/admin/citys/list", { params });
+// await request.get<Res.AgentList>("/admin/agent/list", { params });
+
+// 优惠券列表
+export const adminCoupon = async (params?: Req.AdminCoupon) =>
+  await request.get<Res.CouponList>("/api/admin/coupon/list", { params });
+
+// 操作人信息
+export const adminInfo = async () =>
+  await request.get<Res.AdminInfo>("/api/admin/info");
+
+// 修改状态
+export const putCouponsState = async (params: Req.ChangeStatus) =>
+  await request.put("/api/admin/coupon/status", params);
+
+// 优惠券设置
+export const configCoupon = async () =>
+  await request.get<Res.Coupon>("/api/admin/config/coupon");
+
+export const postConfigCoupon = async (data: Req.ConfigCoupon) =>
+  await request.post("/api/admin/config/coupon", data);
+
+// 添加优惠券
+export const postadminAddCoupons = async (data: Req.AdminAddCoupons) =>
+  await request.post("/api/admin/coupon/add", data);
+
+// 修改优惠券
+export const updateCoupon = async (data: Req.UpdateCoupons) =>
+  await request.put("/api/admin/coupon/update", data);
