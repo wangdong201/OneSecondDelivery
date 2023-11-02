@@ -1,9 +1,17 @@
 import { type FC, useState, useEffect, useRef } from "react";
-import type { MenuProps } from "antd";
 import { Icon } from "@iconify/react";
-import { Button, Input, Divider, Table, Tooltip, Dropdown, Form } from "antd";
+import {
+  Button,
+  Input,
+  Divider,
+  Table,
+  Tooltip,
+  Dropdown,
+  Form,
+  message
+} from "antd";
 import type { ColumnsType } from "antd/es/table";
-import { getWeight } from "@/service/api";
+import { deleteAdminCitysWeightDel, getWeight } from "@/service/api";
 import { useRequest } from "ahooks";
 import { NavLink } from "react-router-dom";
 
@@ -22,7 +30,7 @@ const Weight: FC = () => {
   }, [refresh, seek]);
 
   const inputRef = useRef(null);
-  const onFinish = (values: { tagName?: string }) => {
+  const onFinish = (values: string | number) => {
     setSeek(values);
     // console.log(values);
   };
@@ -53,35 +61,8 @@ const Weight: FC = () => {
     },
     {
       title: "操作",
-      dataIndex: "operate"
-    }
-  ];
-
-  const items: MenuProps["items"] = [
-    {
-      key: "1",
-      label: <div>修改</div>
-    },
-    {
-      key: "2",
-      label: <div>删除</div>
-    }
-  ];
-
-  const data: DataType[] = [];
-  weight?.map((value, index) => {
-    return data.push({
-      key: index,
-      id: value.id,
-      tagName: value.tagName,
-      label: value.tags[0].label,
-      updateTime: (
-        <div>
-          <div>创建:{value.createTime}</div>
-          <div>更新:{value.updateTime}</div>
-        </div>
-      ),
-      operate: (
+      dataIndex: "operate",
+      render: (text: string, record: DataType) => (
         <div className="flex items-center">
           <div>
             <Tooltip placement="top" title={"操作人"}>
@@ -93,15 +74,67 @@ const Weight: FC = () => {
               </NavLink>
             </Tooltip>
           </div>
-          <div>
-            <Dropdown menu={{ items }} className="w-[30px] h-[25px]">
-              <Button>
-                <Icon icon="ri:more-fill" className="ml-[-7px]" />
-              </Button>
-            </Dropdown>
-          </div>
+          <Dropdown
+            menu={{
+              items: [
+                {
+                  key: "1",
+                  label: (
+                    <div>
+                      <NavLink to={"/city/weight/edit/update"}>修改</NavLink>
+                    </div>
+                  )
+                },
+                {
+                  key: "2",
+                  label: (
+                    <div
+                      onClick={() => {
+                        deleteAdmin(record.id);
+                        refresh();
+                      }}
+                    >
+                      删除
+                    </div>
+                  )
+                }
+              ]
+            }}
+            className="w-[30px] h-[25px] ml-1"
+          >
+            <Button>
+              <Icon icon="ri:more-fill" className="ml-[-7px]" />
+            </Button>
+          </Dropdown>
         </div>
       )
+    }
+  ];
+
+  const deleteAdmin = (id: number) => {
+    deleteAdminCitysWeightDel({ id })
+      .then(() => {
+        void message.success("删除成功");
+      })
+      .catch(() => {
+        void message.error("删除失败");
+      });
+  };
+
+  const data: DataType[] = [];
+  weight?.map((value, index) => {
+    return data.push({
+      key: index,
+      id: value.id,
+      tagName: value.tagName,
+      label: value.tags[0].label,
+      updateTime: (
+        <div>
+          <div>创建:{new Date(value.createTime).toLocaleString()}</div>
+          <div>更新:{new Date(value.updateTime).toLocaleString()}</div>
+        </div>
+      ),
+      operate: <div></div>
     });
   });
 
@@ -129,7 +162,15 @@ const Weight: FC = () => {
             />
           </Form.Item>
           <div className="flex items-center mt-[22px]">
-            <Button className="w-[120px] h-[40px]">取消</Button>
+            <Button
+              className="w-[120px] h-[40px]"
+              onClick={() => {
+                onFinish("");
+                refresh();
+              }}
+            >
+              取消
+            </Button>
             <Form.Item className="m-0">
               <Button
                 type="primary"
@@ -144,11 +185,14 @@ const Weight: FC = () => {
         <Divider />
         <div className="mb-[24px] flex justify-between">
           <Button type="primary" className="w-[120px] h-[40px]">
-            添加重量标签
+            <NavLink to={"/city/weight/edit/add"}>添加重量标签</NavLink>
           </Button>
           <Button
             icon={<Icon icon="clarity:refresh-line" rotate={1} />}
             style={{ width: "40px", height: "40px", fontSize: "18px" }}
+            onClick={() => {
+              refresh();
+            }}
           />
         </div>
         <div>

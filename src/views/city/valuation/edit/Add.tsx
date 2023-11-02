@@ -1,86 +1,147 @@
+import { postValuation } from "@/service/api";
 import { Icon } from "@iconify/react";
-import { Button, Input, Form, InputNumber, TimePicker } from "antd";
+import {
+  Button,
+  Input,
+  Form,
+  Space,
+  InputNumber,
+  TimePicker,
+  message
+} from "antd";
 import dayjs from "dayjs";
 import { type FC } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 const Add: FC = () => {
+  const navigate = useNavigate();
+
+  const onFinish = (value: {
+    ruleName: string;
+    ruleContext: {
+      distance: [
+        {
+          gt: number;
+          lte: number;
+          unitDistance: number;
+          price: number;
+        }
+      ];
+      weight: [
+        {
+          gt: number;
+          lte: number;
+          unitWeight: number;
+          price: number;
+        }
+      ];
+      time: [{ gt: number; lte: number; price: number }];
+    };
+  }) => {
+    postValuation(value)
+      .then((res) => {
+        void message.success(res.data.msg);
+      })
+      .catch((err) => {
+        void message.error(err.data.msg);
+      });
+  };
+
   return (
     <div className="h-[100%] overflow-y-auto">
       <div className="px-[24px] flex items-center">
-        <NavLink to={""}>
+        <NavLink to={"/city/valuation/valuations"}>
           <Icon
             icon="mdi:arrow-left"
             className="text-black text-[22px] mr-[15px]"
+            onClick={() => {
+              navigate(-1);
+            }}
           />
         </NavLink>
         <h3 className="text-[22px]">新增计价规则</h3>
       </div>
-      <div className="px-[50px]">
-        <div className="mb-[30px]">
-          <p>
-            <span className="text-[red] mr-[5px]">*</span>规则名称：
-          </p>
-          <Input
-            placeholder="请输入规则名称"
-            className="w-[500px] h-[40px] px-[11px] py-[4px]"
-          />
-        </div>
-        <div className="mb-[30px]">
-          <p>
-            <span className="text-[red] mr-[5px]">*</span>距离规则：
-          </p>
-          <Form name="dynamic_form_item">
-            <Form.List name="names">
-              {(fields, { add, remove }) => (
-                <>
-                  {fields.map((field) => (
-                    <Form.Item required={false} key={field.key}>
-                      <div className="flex">
+      <div className="mt-[30px] px-[50px] w-[500px]">
+        <Form layout="vertical" onFinish={onFinish}>
+          <Form.Item
+            name="ruleName"
+            label="规则名称："
+            rules={[{ required: true, message: "请输入规则名称" }]}
+          >
+            <Input
+              placeholder="请输入规则名称"
+              className="w-[500px] h-[40px] px-[11px] py-[4px]"
+            />
+          </Form.Item>
+          <Form.List name="distance">
+            {(fields, { add, remove }) => (
+              <>
+                <div>
+                  <span className="text-[red]">*</span>距离规则:
+                </div>
+                <div>
+                  {fields.map(({ key, name, ...restField }) => (
+                    <div key={key}>
+                      <Space
+                        key={key}
+                        align="baseline"
+                        className="my-[-18px] items-start"
+                      >
                         <div>
                           <div>范围(km):</div>
-                          <div className="flex items-center">
+                          <div className="flex">
+                            <Form.Item {...restField} name={[name, "gt"]}>
+                              <InputNumber
+                                min={0}
+                                defaultValue={1}
+                                className="h-[38px] w-[88px] leading-[38px]"
+                              />
+                            </Form.Item>
+                            ~
+                            <Form.Item {...restField} name={[name, "lte"]}>
+                              <InputNumber
+                                min={0}
+                                defaultValue={3}
+                                className="h-[38px] w-[88px] leading-[38px]"
+                              />
+                            </Form.Item>
+                          </div>
+                        </div>
+                        <div>
+                          <div>距离单位(km):</div>
+                          <Form.Item
+                            {...restField}
+                            name={[name, "unitDistance"]}
+                          >
                             <InputNumber
                               min={0}
                               defaultValue={1}
-                              className="h-[38px] w-[88px] leading-[38px]"
+                              className="h-[38px] w-[110px] leading-[38px]"
                             />
-                            ~
-                            <InputNumber
-                              min={0}
-                              defaultValue={3}
-                              className="h-[38px] w-[88px] leading-[38px]"
-                            />
-                          </div>
-                        </div>
-                        <div className="mx-[15px]">
-                          <div>距离单位(km):</div>
-                          <InputNumber
-                            min={0}
-                            defaultValue={1}
-                            className="h-[38px] w-[110px] leading-[38px]"
-                          />
+                          </Form.Item>
                         </div>
                         <div>
                           <div>价格(元):</div>
-                          <InputNumber
-                            min={0}
-                            defaultValue={1}
-                            className="h-[38px] w-[110px] leading-[38px]"
-                          />
+                          <Form.Item {...restField} name={[name, "price"]}>
+                            <InputNumber
+                              min={0}
+                              defaultValue={1}
+                              className="h-[38px] w-[110px] leading-[38px]"
+                            />
+                          </Form.Item>
                         </div>
                         <Button
                           onClick={() => {
-                            remove(field.name);
+                            remove(name);
                           }}
                           icon={<Icon icon="ant-design:delete-outlined" />}
-                          className="w-[32px] h-[32px] mt-[25px] ml-[16px] bg-[red] text-white text-[24px] rounded-[50%] leading-[30px]"
+                          className="w-[32px] h-[32px] ml-[5px] mt-[24px] bg-[red] text-white text-[24px] rounded-[50%] leading-[30px]"
                         />
-                      </div>
-                      <div className="text-[#999999]">
+                      </Space>
+                      <div className="text-[#999999] mb-[15px]">
                         距离在(1km~3km)范围内，每1km加价1元
                       </div>
-                    </Form.Item>
+                    </div>
                   ))}
                   <Form.Item>
                     <Button
@@ -92,66 +153,76 @@ const Add: FC = () => {
                       添加距离规则
                     </Button>
                   </Form.Item>
-                </>
-              )}
-            </Form.List>
-          </Form>
-        </div>
-        <div className="mb-[30px]">
-          <p>
-            <span className="text-[red] mr-[5px]">*</span>重量规则：
-          </p>
-          <Form name="dynamic_form_item">
-            <Form.List name="names">
-              {(fields, { add, remove }) => (
-                <>
-                  {fields.map((field) => (
-                    <Form.Item required={false} key={field.key}>
-                      <div className="flex">
+                </div>
+              </>
+            )}
+          </Form.List>
+          <Form.List name="weight">
+            {(fields, { add, remove }) => (
+              <>
+                <div>
+                  <span className="text-[red]">*</span>重量规则：
+                </div>
+                <div>
+                  {fields.map(({ key, name, ...restField }) => (
+                    <div key={key}>
+                      <Space
+                        key={key}
+                        align="baseline"
+                        className="my-[-18px] items-start"
+                      >
                         <div>
                           <div>范围(km):</div>
-                          <div className="flex items-center">
+                          <div className="flex">
+                            <Form.Item {...restField} name={[name, "gt"]}>
+                              <InputNumber
+                                min={0}
+                                defaultValue={1}
+                                className="h-[38px] w-[88px] leading-[38px]"
+                              />
+                            </Form.Item>
+                            ~
+                            <Form.Item {...restField} name={[name, "lte"]}>
+                              <InputNumber
+                                min={0}
+                                defaultValue={3}
+                                className="h-[38px] w-[88px] leading-[38px]"
+                              />
+                            </Form.Item>
+                          </div>
+                        </div>
+                        <div>
+                          <div>重量单位(kg):</div>
+                          <Form.Item {...restField} name={[name, "unitWeight"]}>
                             <InputNumber
                               min={0}
                               defaultValue={1}
-                              className="h-[38px] w-[88px] leading-[38px]"
+                              className="h-[38px] w-[110px] leading-[38px]"
                             />
-                            ~
-                            <InputNumber
-                              min={0}
-                              defaultValue={3}
-                              className="h-[38px] w-[88px] leading-[38px]"
-                            />
-                          </div>
-                        </div>
-                        <div className="mx-[15px]">
-                          <div>重量单位(kg):</div>
-                          <InputNumber
-                            min={0}
-                            defaultValue={1}
-                            className="h-[38px] w-[110px] leading-[38px]"
-                          />
+                          </Form.Item>
                         </div>
                         <div>
                           <div>价格(元):</div>
-                          <InputNumber
-                            min={0}
-                            defaultValue={1}
-                            className="h-[38px] w-[110px] leading-[38px]"
-                          />
+                          <Form.Item {...restField} name={[name, "price"]}>
+                            <InputNumber
+                              min={0}
+                              defaultValue={1}
+                              className="h-[38px] w-[110px] leading-[38px]"
+                            />
+                          </Form.Item>
                         </div>
                         <Button
                           onClick={() => {
-                            remove(field.name);
+                            remove(name);
                           }}
                           icon={<Icon icon="ant-design:delete-outlined" />}
-                          className="w-[32px] h-[32px] mt-[25px] ml-[16px] bg-[red] text-white text-[24px] rounded-[50%] leading-[30px]"
+                          className="w-[32px] h-[32px] ml-[5px] mt-[24px] bg-[red] text-white text-[24px] rounded-[50%] leading-[30px]"
                         />
-                      </div>
-                      <div className="text-[#999999]">
+                      </Space>
+                      <div className="text-[#999999] mb-[15px]">
                         重量在(1kg~3kg)范围内，每1kg加价1元
                       </div>
-                    </Form.Item>
+                    </div>
                   ))}
                   <Form.Item>
                     <Button
@@ -163,55 +234,63 @@ const Add: FC = () => {
                       添加重量规则
                     </Button>
                   </Form.Item>
-                </>
-              )}
-            </Form.List>
-          </Form>
-        </div>
-        <div className="mb-[30px]">
-          <p>
-            <span className="text-[red] mr-[5px]">*</span>时段规则：
-          </p>
-          <Form name="dynamic_form_item">
-            <Form.List name="names">
-              {(fields, { add, remove }) => (
-                <>
-                  {fields.map((field) => (
-                    <Form.Item required={false} key={field.key}>
-                      <div className="flex">
+                </div>
+              </>
+            )}
+          </Form.List>
+          <Form.List name="time">
+            {(fields, { add, remove }) => (
+              <>
+                <div>
+                  <span className="text-[red]">*</span>时段规则：
+                </div>
+                <div>
+                  {fields.map(({ key, name, ...restField }) => (
+                    <div key={key}>
+                      <Space
+                        key={key}
+                        align="baseline"
+                        className="my-[-18px] items-start"
+                      >
                         <div>
-                          <div>范围(km):</div>
-                          <div className="flex items-center">
-                            <TimePicker
-                              format="HH:mm"
-                              defaultValue={dayjs("00:00", "HH:mm")}
-                              className="h-[38px] w-[88px] leading-[38px]"
-                            />
+                          <div>范围:</div>
+                          <div className="flex">
+                            <Form.Item {...restField} name={[name, "gt"]}>
+                              <TimePicker
+                                format="HH:mm"
+                                defaultValue={dayjs("00:00", "HH:mm")}
+                                className="h-[38px] w-[88px] leading-[38px]"
+                              />
+                            </Form.Item>
                             ~
-                            <TimePicker
-                              format="HH:mm"
-                              defaultValue={dayjs("07:00", "HH:mm")}
-                              className="h-[38px] w-[88px] leading-[38px]"
-                            />
+                            <Form.Item {...restField} name={[name, "lte"]}>
+                              <TimePicker
+                                format="HH:mm"
+                                defaultValue={dayjs("00:00", "HH:mm")}
+                                className="h-[38px] w-[88px] leading-[38px]"
+                              />
+                            </Form.Item>
                           </div>
                         </div>
-                        <div className="ml-[15px]">
+                        <div>
                           <div>价格(元):</div>
-                          <InputNumber
-                            min={0}
-                            defaultValue={1}
-                            className="h-[38px] w-[110px] leading-[38px]"
-                          />
+                          <Form.Item {...restField} name={[name, "price"]}>
+                            <InputNumber
+                              min={0}
+                              defaultValue={1}
+                              className="h-[38px] w-[110px] leading-[38px]"
+                            />
+                          </Form.Item>
                         </div>
                         <Button
                           onClick={() => {
-                            remove(field.name);
+                            remove(name);
                           }}
                           icon={<Icon icon="ant-design:delete-outlined" />}
-                          className="w-[32px] h-[32px] mt-[25px] ml-[16px] bg-[red] text-white text-[24px] rounded-[50%] leading-[30px]"
+                          className="w-[32px] h-[32px] ml-[5px] mt-[24px] bg-[red] text-white text-[24px] rounded-[50%] leading-[30px]"
                         />
-                      </div>
-                    </Form.Item>
+                      </Space>
+                    </div>
                   ))}
                   <Form.Item>
                     <Button
@@ -223,14 +302,20 @@ const Add: FC = () => {
                       添加时间段
                     </Button>
                   </Form.Item>
-                </>
-              )}
-            </Form.List>
-          </Form>
-        </div>
-        <Button type="primary" className="w-[85px] h-[40px] ml-[5px]">
-          提交保存
-        </Button>
+                </div>
+              </>
+            )}
+          </Form.List>
+          <Form.Item>
+            <Button
+              type="primary"
+              htmlType="submit"
+              className="w-[85px] h-[40px] ml-[5px]"
+            >
+              提交保存
+            </Button>
+          </Form.Item>
+        </Form>
       </div>
     </div>
   );

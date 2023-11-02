@@ -275,30 +275,32 @@ namespace Res {
       current: number;
       count: number;
       totalPages: number;
-      data: {
-        id: number;
-        createTime: string;
-        updateTime: string;
-        isDelete: number;
-        ruleName: string;
-        ruleContext: {
-          time: undefined[];
-          weight: {
-            gt: number;
-            lte: number;
-            price: number;
-            unitWeight: number;
-          }[];
-          distance: {
-            gt: number;
-            lte: number;
-            price: number;
-            unitDistance: number;
-          }[];
-        };
-        createdBy: string;
-        updatedBy: string;
-      }[];
+      data: [
+        {
+          id: number;
+          createTime: string;
+          updateTime: string;
+          isDelete: number;
+          ruleName: string;
+          ruleContext: {
+            time: { gt: number; lte: number; price: number }[];
+            weight: {
+              gt: number;
+              lte: number;
+              price: number;
+              unitWeight: number;
+            }[];
+            distance: {
+              gt: number;
+              lte: number;
+              price: number;
+              unitDistance: number;
+            }[];
+          };
+          createdBy: string;
+          updatedBy: string;
+        }
+      ];
     };
   };
   type Weight = {
@@ -330,26 +332,6 @@ namespace Res {
       count: number;
       totalPages: number;
       data: [
-        {
-          id: number;
-          createTime: string;
-          updateTime: string;
-          isDelete: number;
-          groupName: string;
-          tags: string[];
-          createdBy: string;
-          updatedBy: string;
-        },
-        {
-          id: number;
-          createTime: string;
-          updateTime: string;
-          isDelete: number;
-          groupName: string;
-          tags: string[];
-          createdBy: string;
-          updatedBy: string;
-        },
         {
           id: number;
           createTime: string;

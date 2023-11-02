@@ -1,16 +1,7 @@
+/* eslint-disable no-console */
 import { type FC, useState, useEffect, useRef } from "react";
-
 import { Icon } from "@iconify/react";
-import {
-  Button,
-  Input,
-  Divider,
-  Table,
-  Tooltip,
-  Dropdown,
-  Form,
-  message
-} from "antd";
+import { Button, Input, Divider, Table, Tooltip, Dropdown, Form } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { getValuation, deleteAdminCitysValuationDel } from "@/service/api";
 import { useRequest } from "ahooks";
@@ -30,9 +21,11 @@ const Valuations: FC = () => {
     refresh();
   }, [refresh, seek]);
 
+  // 搜索
   const inputRef = useRef(null);
-  const onFinish = (values: { ruleName?: string }) => {
+  const onFinish = (values: string | number) => {
     setSeek(values);
+    // console.log(values);
   };
 
   const valuation = ValuationData?.data.data.data;
@@ -41,10 +34,10 @@ const Valuations: FC = () => {
     key: number;
     id: number;
     ruleName: string;
-    distance: string;
-    weight: string;
-    timea: string;
-    updateTime: React.ReactElement;
+    distance: React.ReactElement;
+    weight: React.ReactElement;
+    timea: React.ReactElement;
+    updateTime: React.ReactNode;
     operate: React.ReactElement;
   }
 
@@ -72,7 +65,7 @@ const Valuations: FC = () => {
     {
       title: "操作",
       dataIndex: "operate",
-      render: (_, record: DataType) => (
+      render: (text: string, record: DataType) => (
         <div className="flex items-center">
           <Tooltip placement="top" title={"操作人"}>
             <NavLink to={"/user/admins"}>
@@ -87,7 +80,11 @@ const Valuations: FC = () => {
               items: [
                 {
                   key: "1",
-                  label: <div>修改</div>
+                  label: (
+                    <div>
+                      <NavLink to={"/city/valuation/edit/update"}>修改</NavLink>
+                    </div>
+                  )
                 },
                 {
                   key: "2",
@@ -104,7 +101,7 @@ const Valuations: FC = () => {
                 }
               ]
             }}
-            className="w-[30px] h-[25px]"
+            className="w-[30px] h-[25px] ml-1"
           >
             <Button>
               <Icon icon="ri:more-fill" className="ml-[-7px]" />
@@ -115,29 +112,50 @@ const Valuations: FC = () => {
     }
   ];
 
+  // 删除
   const deleteAdmin = (id: number) => {
     deleteAdminCitysValuationDel({ id })
       .then(() => {
-        void message.success("删除成功");
+        console.log("删除成功");
       })
       .catch(() => {
-        void message.error("删除失败");
+        console.log("删除失败");
       });
   };
 
   const data: DataType[] = [];
   valuation?.map((value, index) => {
+    const distance = value.ruleContext.distance[0];
+    const weight = value.ruleContext.weight[0];
     return data.push({
       key: index,
       id: value.id,
       ruleName: value.ruleName,
-      distance: "在1~10公里范围内,每一公里加价1元",
-      weight: "在1~10公里范围内,每一公里加价1元",
-      timea: "在1~10公里范围内,每一公里加价1元",
+      distance: (
+        <div>
+          {distance === undefined
+            ? null
+            : `在${distance.gt}~${distance.lte}公里范围内,每${distance.unitDistance}公里加价${distance.price}元`}
+        </div>
+      ),
+      weight: (
+        <div>
+          {weight === undefined
+            ? null
+            : `在${weight.gt}~${weight.lte}公里范围内,每${weight.unitWeight}公里加价${weight.price}元`}
+        </div>
+      ),
+      timea: (
+        <div>
+          {weight === undefined
+            ? null
+            : `在${weight.gt}~${weight.lte}时间段内,加价${weight.unitWeight}元`}
+        </div>
+      ),
       updateTime: (
         <div>
-          <div>创建:{value.createTime}</div>
-          <div>更新:{value.updateTime}</div>
+          <div>创建:{new Date(value.createTime).toLocaleString()}</div>
+          <div>更新:{new Date(value.updateTime).toLocaleString()}</div>
         </div>
       ),
       operate: <div></div>
@@ -168,7 +186,15 @@ const Valuations: FC = () => {
             />
           </Form.Item>
           <div className="flex items-center mt-[22px]">
-            <Button className="w-[120px] h-[40px]">取消</Button>
+            <Button
+              className="w-[120px] h-[40px]"
+              onClick={() => {
+                onFinish("");
+                refresh();
+              }}
+            >
+              取消
+            </Button>
             <Form.Item className="m-0">
               <Button
                 type="primary"
@@ -183,11 +209,14 @@ const Valuations: FC = () => {
         <Divider />
         <div className="mb-[24px] flex justify-between">
           <Button type="primary" className="w-[120px] h-[40px]">
-            添加计价规则
+            <NavLink to={"/city/valuation/edit/add"}>添加计价规则</NavLink>
           </Button>
           <Button
             icon={<Icon icon="clarity:refresh-line" rotate={1} />}
             style={{ width: "40px", height: "40px", fontSize: "18px" }}
+            onClick={() => {
+              refresh();
+            }}
           />
         </div>
         <div>
