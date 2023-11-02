@@ -17,7 +17,7 @@ import Setting from "../views/coupon/setting";
 import Cancelset from "../views/oder/cancelset";
 import Capitaltrend from "../views/oder/capitaltrend";
 import Feeset from "../views/oder/feeset";
-import Oders from "../views/oder/oders";
+import Oders from "@/views/oder/oders";
 import RiderCash from "../views/rider/cash";
 import Registers from "../views/rider/registers";
 import Riders from "../views/rider/riders";

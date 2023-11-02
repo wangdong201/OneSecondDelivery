@@ -216,3 +216,28 @@ export const postadminAddCoupons = async (data: Req.AdminAddCoupons) =>
 // 修改优惠券
 export const updateCoupon = async (data: Req.UpdateCoupons) =>
   await request.put("/api/admin/coupon/update", data);
+
+// 订单管理
+export const adminOrder = async (params: Req.AdminAgent) =>
+  await request.get<Res.ResponseData>("/api/admin/order/list", { params });
+
+// 资金走向
+export const orderCapitaltrend = async (params: Req.AdminAgent) =>
+  await request.get<Res.ResponseDatas>("/api/admin/order/capitaltrend/list", {
+    params
+  });
+// 取消订单设置
+export const configOrdercancel = async () =>
+  await request.get<Res.ResPonsedata>("/api/admin/config/ordercancel");
+
+export const postConfigOrdercancel = async (data: Req.ResPonsedata) =>
+  await request.post("/api/admin/config/ordercancel", data);
+// 小费选项配置
+export const configOrderfee = async () =>
+  await request.get<Res.ResPonseData>("/api/admin/config/orderfee");
+
+export const postConfigOrderfee = async (data: Req.ResponseData) =>
+  await request.post("/api/admin/config/orderfee", data);
+
+// 跳转
+export const getAdminInfoOne = async () => await request.get("/api/admin/info");

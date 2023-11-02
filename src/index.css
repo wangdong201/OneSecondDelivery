@@ -6,6 +6,9 @@
 .containerShadow {
   box-shadow: 0 0 5px 3px rgba(0, 0, 0, 0.05);
 }
+#div::-webkit-scrollbar {
+  display: none;
+}
 
 body {
   margin: 0px;
