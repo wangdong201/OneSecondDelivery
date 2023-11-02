@@ -41,6 +41,45 @@ namespace Res {
       data: [];
     };
   };
+  type CouponList = {
+    code: number;
+    msg: string;
+    data: {
+      pageSize: number;
+      current: number;
+      count: number;
+      totalPages: number;
+      data: [];
+    };
+  };
+  type couponData = {
+    id: number;
+    createTime: string;
+    updateTime: string;
+    couponNo: string;
+    couponName: string;
+    deadlineDays: number;
+    discountAmount: number;
+    conditionsAmount: number;
+    conditionService: string;
+    cumulativeDrawNo: number;
+    cumulativeUseNo: number;
+    limitNumber: number;
+    status: number;
+    updatedBy: string;
+  };
+
+  type Coupon = {
+    code: number;
+    msg: string;
+    data: {
+      shareOpen: boolean;
+      newUserOpen: boolean;
+      newUserRules: { couponNo: string; probability: number }[];
+      shareUserRules: { couponNo: string; probability: number }[];
+    };
+  };
+
   type CashIs = {
     code: number;
     msg: string;
@@ -135,6 +174,17 @@ namespace Res {
     data: { date: string; wx: number; user: number }[];
   };
   type PersonalData = {
+    code: number;
+    msg: string;
+    data: {
+      adminNo: string;
+      mobileNumber: string;
+      adminName: string;
+      realName: string;
+      avatarUrl: object;
+    };
+  };
+  type AdminInfo = {
     code: number;
     msg: string;
     data: {
