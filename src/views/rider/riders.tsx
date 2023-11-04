@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
 import { type FC, useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Form,
   Input,
@@ -43,6 +44,7 @@ interface RiderSS {
 const showTotals: PaginationProps["showTotal"] = (total) => `共${total}条数据`;
 
 const Riders: FC = () => {
+  const navigate = useNavigate();
   const [rdata, setRData] = useState<Res.RidersType>();
   const data: DataType[] = [];
   const [count, setCount] = useState(0);
@@ -356,7 +358,9 @@ const Riders: FC = () => {
       </Form>
       <div className=" flex justify-between">
         <Button
-          onClick={() => {}}
+          onClick={() => {
+            navigate("/rider/edit/add");
+          }}
           className=" h-[40px] rounded-[4px]"
           type="primary"
         >
