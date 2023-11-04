@@ -70,9 +70,11 @@ const Riders: FC = () => {
       .catch((error) => error);
   }, [count, objA]);
 
-  rdata?.data.data.forEach((value, index) => {
-    data.push({ ...value, key: index });
-  });
+  if (rdata?.data !== null) {
+    rdata?.data.data.forEach((value, index) => {
+      data.push({ ...value, key: index });
+    });
+  }
 
   const rowSelection = {};
 
