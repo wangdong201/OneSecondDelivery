@@ -41,6 +41,7 @@ import TagAdd from "../views/city/tag/edit/Add";
 import ValuationUpdate from "../views/city/valuation/edit/Update";
 import WeightUpdate from "../views/city/weight/edit/Update";
 import TagUpdate from "../views/city/tag/edit/Update";
+import RiderEditAdd from "@/views/rider/edit/add";
 
 const routes = [
   { path: "/login", element: <Login /> },
@@ -88,7 +89,8 @@ const routes = [
       { path: "/city/tag/edit/add", element: <TagAdd /> },
       { path: "/city/valuation/edit/update", element: <ValuationUpdate /> },
       { path: "/city/weight/edit/update", element: <WeightUpdate /> },
-      { path: "/city/tag/edit/update", element: <TagUpdate /> }
+      { path: "/city/tag/edit/update", element: <TagUpdate /> },
+      { path: "/rider/edit/add", element: <RiderEditAdd /> }
     ]
   }
 ];
