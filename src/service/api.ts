@@ -125,8 +125,8 @@ export const deleteAdminCitysTagDel = async (
 ) => await request.delete("/api/admin/citys/tag/del", { data });
 
 // 计价规则添加
-export const postValuation = async (params: Req.addAdminCitysValuaContext) =>
-  await request.post("/api/admin/citys/valuation/add", { params });
+export const postValuation = async (params: Req.addAdminCitysValua) =>
+  await request.post("/api/admin/citys/valuation/add", params);
 
 // 获取小程序设置ID及密钥
 // 开发设置
