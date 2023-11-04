@@ -230,4 +230,10 @@ namespace Req {
     current: number;
     pageSize: number;
   };
+  type getRegisters = {
+    current: number;
+    pageSize: number;
+  };
+  type PutRegisters = { userNo: string };
+  type PutRegistersRefuse = { userNo: string; refuseReason: string };
 }

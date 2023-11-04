@@ -279,3 +279,16 @@ export const putRider = async (data: Req.PutRider) =>
 // 骑手列表操作
 export const putRidercz = async (data: Req.PutRidercz) =>
   await request.put("/api/admin/user/status", data);
+
+// 骑手审核列表
+export const getRegistersData = async (params: Req.getRegisters) =>
+  await request.get<Res.RegistersData>("/api/admin/rider/register/list", {
+    params
+  });
+
+// 骑手审核状态修改
+export const putRegisters = async (data: Req.PutRegisters) =>
+  await request.put("/api/admin/rider/pass", data);
+
+export const putRegistersRefuse = async (data: Req.PutRegistersRefuse) =>
+  await request.put("/api/admin/rider/refuse", data);

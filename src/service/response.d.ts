@@ -480,4 +480,27 @@ namespace Res {
       }[];
     };
   };
+  type RegistersData = {
+    code: number;
+    msg: string;
+    data: {
+      pageSize: number;
+      current: number;
+      count: number;
+      totalPages: number;
+      data: {
+        id: number;
+        createTime: string;
+        updateTime: string;
+        realname: string;
+        idCardNo: string;
+        avatarFaceImage: string;
+        nationalFaceImage: string;
+        status: number;
+        refuseReason: string;
+        userNo: string;
+        cityNo: string;
+      }[];
+    };
+  };
 }
