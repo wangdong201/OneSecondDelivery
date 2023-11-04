@@ -89,18 +89,19 @@ namespace Req {
   type deleteAdminCitysValuation = {
     id: number;
   };
-  type addAdminCitysValuaContext = {
+  type addAdminCitysValua = {
     ruleName: string;
     ruleContext: {
-      distance: {
-        gt: number;
-        lte: number;
-        unitDistance: number;
-        price: number;
-      }[];
-      weight: { gt: number; lte: number; unitWeight: number; price: number }[];
-      time: { gt: number; lte: number; price: number }[];
+      distance: number[];
+      weight: number[];
+      time: numer[];
     };
+  };
+  type PostValuations = {
+    distance: number[];
+    time: number[];
+    weight: number[];
+    ruleName: string;
   };
 
   type ConfigAppDs = {

@@ -1,14 +1,7 @@
+/* eslint-disable no-console */
 import { postValuation } from "@/service/api";
 import { Icon } from "@iconify/react";
-import {
-  Button,
-  Input,
-  Form,
-  Space,
-  InputNumber,
-  TimePicker,
-  message
-} from "antd";
+import { Button, Input, Form, Space, InputNumber, TimePicker } from "antd";
 import dayjs from "dayjs";
 import { type FC } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
@@ -16,35 +9,22 @@ import { NavLink, useNavigate } from "react-router-dom";
 const Add: FC = () => {
   const navigate = useNavigate();
 
-  const onFinish = (value: {
-    ruleName: string;
-    ruleContext: {
-      distance: [
-        {
-          gt: number;
-          lte: number;
-          unitDistance: number;
-          price: number;
-        }
-      ];
-      weight: [
-        {
-          gt: number;
-          lte: number;
-          unitWeight: number;
-          price: number;
-        }
-      ];
-      time: [{ gt: number; lte: number; price: number }];
-    };
-  }) => {
-    postValuation(value)
-      .then((res) => {
-        void message.success(res.data.msg);
-      })
-      .catch((err) => {
-        void message.error(err.data.msg);
-      });
+  const onFinish = ({
+    ruleName,
+    distance,
+    weight,
+    time
+  }: Req.PostValuations) => {
+    postValuation({
+      ruleName,
+      ruleContext: {
+        distance,
+        weight,
+        time
+      }
+    })
+      .then(() => {})
+      .catch(() => {});
   };
 
   return (
@@ -73,7 +53,7 @@ const Add: FC = () => {
               className="w-[500px] h-[40px] px-[11px] py-[4px]"
             />
           </Form.Item>
-          <Form.List name="distance">
+          <Form.List name="distance" initialValue={[]}>
             {(fields, { add, remove }) => (
               <>
                 <div>
@@ -90,7 +70,11 @@ const Add: FC = () => {
                         <div>
                           <div>范围(km):</div>
                           <div className="flex">
-                            <Form.Item {...restField} name={[name, "gt"]}>
+                            <Form.Item
+                              {...restField}
+                              name={[name, "gt"]}
+                              initialValue={1}
+                            >
                               <InputNumber
                                 min={0}
                                 defaultValue={1}
@@ -98,7 +82,11 @@ const Add: FC = () => {
                               />
                             </Form.Item>
                             ~
-                            <Form.Item {...restField} name={[name, "lte"]}>
+                            <Form.Item
+                              {...restField}
+                              name={[name, "lte"]}
+                              initialValue={3}
+                            >
                               <InputNumber
                                 min={0}
                                 defaultValue={3}
@@ -112,6 +100,7 @@ const Add: FC = () => {
                           <Form.Item
                             {...restField}
                             name={[name, "unitDistance"]}
+                            initialValue={1}
                           >
                             <InputNumber
                               min={0}
@@ -122,7 +111,11 @@ const Add: FC = () => {
                         </div>
                         <div>
                           <div>价格(元):</div>
-                          <Form.Item {...restField} name={[name, "price"]}>
+                          <Form.Item
+                            {...restField}
+                            name={[name, "price"]}
+                            initialValue={1}
+                          >
                             <InputNumber
                               min={0}
                               defaultValue={1}
@@ -139,7 +132,7 @@ const Add: FC = () => {
                         />
                       </Space>
                       <div className="text-[#999999] mb-[15px]">
-                        距离在(1km~3km)范围内，每1km加价1元
+                        距离在(1km~3km)范围内,每1km加价1元
                       </div>
                     </div>
                   ))}
@@ -174,7 +167,11 @@ const Add: FC = () => {
                         <div>
                           <div>范围(km):</div>
                           <div className="flex">
-                            <Form.Item {...restField} name={[name, "gt"]}>
+                            <Form.Item
+                              {...restField}
+                              name={[name, "gt"]}
+                              initialValue={1}
+                            >
                               <InputNumber
                                 min={0}
                                 defaultValue={1}
@@ -182,7 +179,11 @@ const Add: FC = () => {
                               />
                             </Form.Item>
                             ~
-                            <Form.Item {...restField} name={[name, "lte"]}>
+                            <Form.Item
+                              {...restField}
+                              name={[name, "lte"]}
+                              initialValue={3}
+                            >
                               <InputNumber
                                 min={0}
                                 defaultValue={3}
@@ -193,7 +194,11 @@ const Add: FC = () => {
                         </div>
                         <div>
                           <div>重量单位(kg):</div>
-                          <Form.Item {...restField} name={[name, "unitWeight"]}>
+                          <Form.Item
+                            {...restField}
+                            name={[name, "unitWeight"]}
+                            initialValue={1}
+                          >
                             <InputNumber
                               min={0}
                               defaultValue={1}
@@ -203,7 +208,11 @@ const Add: FC = () => {
                         </div>
                         <div>
                           <div>价格(元):</div>
-                          <Form.Item {...restField} name={[name, "price"]}>
+                          <Form.Item
+                            {...restField}
+                            name={[name, "price"]}
+                            initialValue={1}
+                          >
                             <InputNumber
                               min={0}
                               defaultValue={1}
@@ -220,7 +229,7 @@ const Add: FC = () => {
                         />
                       </Space>
                       <div className="text-[#999999] mb-[15px]">
-                        重量在(1kg~3kg)范围内，每1kg加价1元
+                        重量在(1kg~3kg)范围内,每1kg加价1元
                       </div>
                     </div>
                   ))}
@@ -255,7 +264,11 @@ const Add: FC = () => {
                         <div>
                           <div>范围:</div>
                           <div className="flex">
-                            <Form.Item {...restField} name={[name, "gt"]}>
+                            <Form.Item
+                              {...restField}
+                              name={[name, "gt"]}
+                              initialValue={dayjs("00:00", "HH:mm")}
+                            >
                               <TimePicker
                                 format="HH:mm"
                                 defaultValue={dayjs("00:00", "HH:mm")}
@@ -263,7 +276,11 @@ const Add: FC = () => {
                               />
                             </Form.Item>
                             ~
-                            <Form.Item {...restField} name={[name, "lte"]}>
+                            <Form.Item
+                              {...restField}
+                              name={[name, "lte"]}
+                              initialValue={dayjs("00:00", "HH:mm")}
+                            >
                               <TimePicker
                                 format="HH:mm"
                                 defaultValue={dayjs("00:00", "HH:mm")}
@@ -274,7 +291,11 @@ const Add: FC = () => {
                         </div>
                         <div>
                           <div>价格(元):</div>
-                          <Form.Item {...restField} name={[name, "price"]}>
+                          <Form.Item
+                            {...restField}
+                            name={[name, "price"]}
+                            initialValue={1}
+                          >
                             <InputNumber
                               min={0}
                               defaultValue={1}
